@@ -1,0 +1,16 @@
+VibrationMonitoring.c:65:9:Init_Demo	16	static
+VibrationMonitoring.c:183:16:Meas_Odr	24	static
+VibrationMonitoring.c:297:9:Restart_FIFO	8	static
+VibrationMonitoring.c:321:9:Collect_Data	48	static
+VibrationMonitoring.c:409:16:Enable_FIFO	8	static
+VibrationMonitoring.c:425:16:Disable_FIFO	8	static
+VibrationMonitoring.c:447:13:HP_DC_Changer	16	static
+VibrationMonitoring.c:489:16:Enable_DRDY	16	static
+VibrationMonitoring.c:517:16:Disable_DRDY	8	static
+VibrationMonitoring.c:534:6:Init_Sensors	8	static
+VibrationMonitoring.c:555:6:INIT_STREAMING_HEADER	16	static
+VibrationMonitoring.c:569:6:Get_Msg	32	static
+VibrationMonitoring.c:634:6:UART_SendMsg	24	static
+VibrationMonitoring.c:665:6:CHK_ComputeAndAdd	24	static
+VibrationMonitoring.c:685:5:ByteStuffCopy	24	static
+VibrationMonitoring.c:705:5:ByteStuffCopyByte	24	static
