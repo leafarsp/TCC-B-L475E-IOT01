@@ -1,0 +1,18 @@
+D:\TCC\B-L475E-IOT01A\STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0\Projects\B-L475E-IOT01\Applications\Cloud\GenericMQTT\EWARM\B-L475E-IOT01_GenericMQTT\BrowseInfo\Middlewares\Third_Party\MQTTPacket\MQTTUnsubscribeServer.pbi: \
+  D:\TCC\B-L475E-IOT01A\STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0\Middlewares\Third_Party\paho.mqtt.embedded-c\MQTTPacket\src\MQTTUnsubscribeServer.c \
+  D:\TCC\B-L475E-IOT01A\STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0\Middlewares\Third_Party\paho.mqtt.embedded-c\MQTTPacket\src\MQTTPacket.h \
+  D:\TCC\B-L475E-IOT01A\STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0\Middlewares\Third_Party\paho.mqtt.embedded-c\MQTTPacket\src\MQTTConnect.h \
+  D:\TCC\B-L475E-IOT01A\STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0\Middlewares\Third_Party\paho.mqtt.embedded-c\MQTTPacket\src\MQTTPublish.h \
+  D:\TCC\B-L475E-IOT01A\STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0\Middlewares\Third_Party\paho.mqtt.embedded-c\MQTTPacket\src\MQTTSubscribe.h \
+  D:\TCC\B-L475E-IOT01A\STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0\Middlewares\Third_Party\paho.mqtt.embedded-c\MQTTPacket\src\MQTTUnsubscribe.h \
+  D:\TCC\B-L475E-IOT01A\STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0\Middlewares\Third_Party\paho.mqtt.embedded-c\MQTTPacket\src\MQTTFormat.h \
+  D:\TCC\B-L475E-IOT01A\STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0\Middlewares\Third_Party\paho.mqtt.embedded-c\MQTTPacket\src\StackTrace.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\stdio.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\ycheck.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\yvals.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Defaults.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Config_Full.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Product.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\ysizet.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\string.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Product_string.h
