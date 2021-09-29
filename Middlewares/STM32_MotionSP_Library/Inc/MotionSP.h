@@ -312,11 +312,15 @@ void MotionSP_TimeDomainEvalFromCircBuff(sTimeDomainData_t *pTimeDomainData, sCi
 void MotionSP_fftAdapting(sAccMagResults_t *pAccMagResults, float WSF);
 void MotionSP_fftPeakFinding(sAccMagResults_t *pAccMagResults);
 void MotionSP_fftExecution(uint8_t avg);
+//void MotionSP_FillSpeedCircBuffer();
+
 
 sAcceleroODR_t *MotionSP_GetRealAcceleroOdr(void);
 sMotionSP_Parameter_t *MotionSP_GetParameters(void);
 sAccMagResults_t *MotionSP_GetAccMagResults(void);
 sTimeDomainData_t *MotionSP_GetTimeDomainData(void);
+
+
 
 /**
   * @}
@@ -327,6 +331,7 @@ sTimeDomainData_t *MotionSP_GetTimeDomainData(void);
   */
 
 extern sCircBuffer_t AccCircBuffer;
+extern sCircBuffer_t SpeedCircBuffer;
 extern uint8_t fftIsEnabled;
 extern sMotionSP_Parameter_t MotionSP_Parameters;
 extern sAcceleroParam_t sTimeDomain;
@@ -342,6 +347,10 @@ extern arm_rfft_fast_instance_f32 fftS;
 extern sMotionSP_Data_t MotionSP_Data;
 extern sTimeDomainData_t TimeDomainData;
 extern sAccMagResults_t AccMagResults;
+
+
+extern SensorVal_f_t SpeedTimeDomain;           //!< Time Domain Speed Arrays to use during integration
+extern SensorVal_f_t SpeedTimeDomain_noDC;      //!< Time Domain Speed Arrays without DC Offset to use during integration
 
 #ifdef USE_SUBRANGE
 extern sSubrange_t SRAmplitude;

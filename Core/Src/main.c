@@ -181,9 +181,15 @@ int main(void)
 //                }
                 printf("\n\n\n ACC:\n");
                 for (int i=0;i<AccCircBuffer.Size;i++){
-                	printf("t,%d,x,%f,y,%f,z,%f\n",i, AccCircBuffer.Data.AXIS_X[i], AccCircBuffer.Data.AXIS_Y[i], AccCircBuffer.Data.AXIS_Z[i]);
+                	printf("t_a,%d,x,%f,y,%f,z,%f\n",i, AccCircBuffer.Data.AXIS_X[i], AccCircBuffer.Data.AXIS_Y[i], AccCircBuffer.Data.AXIS_Z[i]);
 
                    }
+
+                printf("\n\n\n Speed:\n");
+				for (int i=0;i<AccCircBuffer.Size;i++){
+					printf("t_s,%d,x,%f,y,%f,z,%f\n",i, SpeedCircBuffer.Data.AXIS_X[i], SpeedCircBuffer.Data.AXIS_Y[i], SpeedCircBuffer.Data.AXIS_Z[i]);
+
+				   }
                 RestartFlag = 1;
               }
 

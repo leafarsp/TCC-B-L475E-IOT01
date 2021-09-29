@@ -54,7 +54,7 @@ extern "C" {
 #define FFT_OVL_DEFAULT       FFT_OVL_MAX   //!< Default value for OVERLAPPING
 #define TAU_DEFAULT           50            //!< Default value for Moving RMS Filtering in ms
 #define WINDOW_DEFAULT        HANNING       //!< Default value for Windowing Method
-#define TD_DEFAULT            TD_SPEED      //!< Default value for Time Domain Analysis
+#define TD_DEFAULT            TD_BOTH_TAU      //!< Default value for Time Domain Analysis
 #define TACQ_DEFAULT          5000          //!< Defualt value for Total acquisition time in ms
 
 #define CIRC_BUFFER_RATIO_NUM 12u           //!< Buffer Ratio numerator

@@ -106,12 +106,21 @@ uint8_t Init_Demo(void)
   AccCircBuffer.IdPos = 0;
   AccCircBuffer.Ovf = 0;
 
+  SpeedCircBuffer.Size = MotionSP_Parameters.FftSize;
+  SpeedCircBuffer.IdPos = 0;
+  SpeedCircBuffer.Ovf=0;
+
   magSize = MotionSP_Parameters.FftSize / 2;
 
   /* Reset circular buffer for storing accelerometer values */
   memset(AccCircBuffer.Data.AXIS_X, 0x00, (AccCircBuffer.Size) * (sizeof(float)));
   memset(AccCircBuffer.Data.AXIS_Y, 0x00, (AccCircBuffer.Size) * (sizeof(float)));
   memset(AccCircBuffer.Data.AXIS_Z, 0x00, (AccCircBuffer.Size) * (sizeof(float)));
+
+  /* Reset circular buffer for storing accelerometer values */
+  memset(SpeedCircBuffer.Data.AXIS_X, 0x00, (SpeedCircBuffer.Size) * (sizeof(float)));
+  memset(SpeedCircBuffer.Data.AXIS_Y, 0x00, (SpeedCircBuffer.Size) * (sizeof(float)));
+  memset(SpeedCircBuffer.Data.AXIS_Z, 0x00, (SpeedCircBuffer.Size) * (sizeof(float)));
 
   /* Reset the TimeDomain parameter values */
   sTimeDomain.AccRms.AXIS_X = 0.0f;
@@ -369,7 +378,13 @@ uint8_t Collect_Data(void)
 
           /* Fill the accelero circular buffer */
           MotionSP_CreateAccCircBuffer(&AccCircBuffer, single_data_no_dc);
-          //MotionSP_CreateAccCircBuffer(&AccCircBuffer, single_data);
+
+          /* TIME DOMAIN ANALYSIS: Speed RMS Moving AVERAGE */
+         MotionSP_evalSpeedFromAccelero(&SpeedTimeDomain, &AccCircBuffer, RestartFlag);
+              // Delete the Speed DC components
+         MotionSP_speedDelOffset(&SpeedTimeDomain_noDC, &SpeedTimeDomain, DC_SMOOTH, RestartFlag);
+
+          MotionSP_CreateAccCircBuffer(&SpeedCircBuffer, SpeedTimeDomain);
 
           if (AccCircBuffer.Ovf == 1)
           {
@@ -377,7 +392,8 @@ uint8_t Collect_Data(void)
             AccCircBuffer.Ovf = 0;
           }
 
-
+          MotionSP_TimeDomainProcess(&sTimeDomain, (Td_Type_t)MotionSP_Parameters.td_type, RestartFlag);
+//          MotionSP_FillSpeedCircBuffer();
           RestartFlag = 0;
           break;
 

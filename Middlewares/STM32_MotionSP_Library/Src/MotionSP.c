@@ -61,6 +61,7 @@
 
 sMotionSP_Parameter_t MotionSP_Parameters;      //!< Algorithm Parameters
 sCircBuffer_t AccCircBuffer;                    //!< Circular buffer for storing input values for FFT
+sCircBuffer_t SpeedCircBuffer;                    //!< Circular buffer for storing input values for FFT
 arm_rfft_fast_instance_f32 fftS;                //!< Instance structure for the floating-point RFFT/RIFFT function
 uint16_t magSize = 0;                           //!< to store the actual size of the FFT magnitude elements
 uint16_t accCircBuffIndexForFft;                //!< Position index in circular buffer to perform FFT
@@ -91,8 +92,8 @@ sSubrange_t SRBinVal;                           //!< X-Y-Z Threshold Bin Frequen
   */
 
 sAxesMagBuff_t AccAxesAvgMagBuff;               //!< Array for storing accelerometer magnitude average values
-static SensorVal_f_t SpeedTimeDomain;           //!< Time Domain Speed Arrays to use during integration
-static SensorVal_f_t SpeedTimeDomain_noDC;      //!< Time Domain Speed Arrays without DC Offset to use during integration
+SensorVal_f_t SpeedTimeDomain;           //!< Time Domain Speed Arrays to use during integration
+SensorVal_f_t SpeedTimeDomain_noDC;      //!< Time Domain Speed Arrays without DC Offset to use during integration
 
 /**
   * @}
@@ -102,8 +103,8 @@ static SensorVal_f_t SpeedTimeDomain_noDC;      //!< Time Domain Speed Arrays wi
   * @{
   */
 
-static void MotionSP_speedDelOffset(SensorVal_f_t *pDstArr, SensorVal_f_t *pSrcArr, float Smooth, uint8_t Restart);
-static void MotionSP_evalSpeedFromAccelero(SensorVal_f_t *pDstArr, sCircBuffer_t *pSrcArr, uint8_t Restart);
+void MotionSP_speedDelOffset(SensorVal_f_t *pDstArr, SensorVal_f_t *pSrcArr, float Smooth, uint8_t Restart);
+void MotionSP_evalSpeedFromAccelero(SensorVal_f_t *pDstArr, sCircBuffer_t *pSrcArr, uint8_t Restart);
 static void MotionSP_SwSpeedRmsFilter(SensorVal_f_t *pDstArr, SensorVal_f_t *pSrcArr, float ExpTau, uint8_t start);
 static void MotionSP_SwAccRmsFilter(SensorVal_f_t *pDstArr, sCircBuffer_t *pSrcArr, float Lambda, uint8_t start);
 static void MotionSP_SwAccPkEval(SensorVal_f_t *pDstArr, sCircBuffer_t *pSrcArr);
@@ -120,7 +121,7 @@ static void MotionSP_TD_AccRmsEvalFromCircBuff(sTimeDomainData_t *pDst, sCircBuf
   *  @param  Restart flag to reInit internal value
   *  @return none
   */
-static void MotionSP_speedDelOffset(SensorVal_f_t *pDstArr, SensorVal_f_t *pSrcArr, float Smooth, uint8_t Restart)
+void MotionSP_speedDelOffset(SensorVal_f_t *pDstArr, SensorVal_f_t *pSrcArr, float Smooth, uint8_t Restart)
 {
   static SensorVal_f_t DstArrPre;
   static SensorVal_f_t SrcArrPre;
@@ -158,7 +159,7 @@ static void MotionSP_speedDelOffset(SensorVal_f_t *pDstArr, SensorVal_f_t *pSrcA
   *  @param  Restart flag to reInit internal value
   *  @return none
   */
-static void MotionSP_evalSpeedFromAccelero(SensorVal_f_t *pDstArr,
+void MotionSP_evalSpeedFromAccelero(SensorVal_f_t *pDstArr,
                                            sCircBuffer_t *pSrcArr,
                                            uint8_t Restart)
 {
@@ -184,15 +185,15 @@ static void MotionSP_evalSpeedFromAccelero(SensorVal_f_t *pDstArr,
 
     pDstArr->AXIS_X = DstArrPre.AXIS_X +
                       (((1-GAMMA)*DeltaT)*(pSrcArr->Data.AXIS_X[IndexPre]))+
-                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_X[IndexCurr]));
+                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_X[IndexCurr]))*1000;
 
     pDstArr->AXIS_Y = DstArrPre.AXIS_Y +
                       (((1-GAMMA)*DeltaT)*(pSrcArr->Data.AXIS_Y[IndexPre]))+
-                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_Y[IndexCurr]));
+                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_Y[IndexCurr]))*1000;
 
     pDstArr->AXIS_Z = DstArrPre.AXIS_Z +
                       (((1-GAMMA)*DeltaT)*(pSrcArr->Data.AXIS_Z[IndexPre]))+
-                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_Z[IndexCurr]));
+                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_Z[IndexCurr]))*1000;
 
     memcpy((void *)&DstArrPre, (void *)pDstArr, sizeof(SensorVal_f_t));
   }
@@ -481,6 +482,8 @@ void MotionSP_CreateAccCircBuffer(sCircBuffer_t *pCircBuff, SensorVal_f_t buffTy
   pCircBuff->Data.AXIS_Z[pCircBuff->IdPos] = buffType.AXIS_Z*G_CONV;
 }
 
+
+
 /**
   * @brief Time Domain Processing
   * @brief From accelerometer to speed estimation to target the final RMS value processing
@@ -522,6 +525,8 @@ void MotionSP_TimeDomainProcess(sAcceleroParam_t *pTimeDomain, Td_Type_t td_type
     MotionSP_SwAccRmsFilter(&sTimeDomain.AccRms, &AccCircBuffer, AcceleroODR.Tau, Restart);
   }
 }
+
+
 
 /**
   * @brief Time Domain Data Evaluation from a stored accelerations
@@ -923,9 +928,9 @@ void MotionSP_FrequencyDomainProcess(void)
   static float fftOutZ[FFT_SIZE_MAX];          //!< Array for output values for the complex magnitude function
 
   /* ------------------ Freeze the Accelerometer data to analyze--------------*/
-  MotionSP_fftInBuild(AccAxesArray_fftIn.AXIS_X, MotionSP_Parameters.FftSize, AccCircBuffer.Data.AXIS_X, AccCircBuffer.Size, accCircBuffIndexForFft);
-  MotionSP_fftInBuild(AccAxesArray_fftIn.AXIS_Y, MotionSP_Parameters.FftSize, AccCircBuffer.Data.AXIS_Y, AccCircBuffer.Size, accCircBuffIndexForFft);
-  MotionSP_fftInBuild(AccAxesArray_fftIn.AXIS_Z, MotionSP_Parameters.FftSize, AccCircBuffer.Data.AXIS_Z, AccCircBuffer.Size, accCircBuffIndexForFft);
+  MotionSP_fftInBuild(AccAxesArray_fftIn.AXIS_X, MotionSP_Parameters.FftSize, SpeedCircBuffer.Data.AXIS_X, SpeedCircBuffer.Size, accCircBuffIndexForFft);
+  MotionSP_fftInBuild(AccAxesArray_fftIn.AXIS_Y, MotionSP_Parameters.FftSize, SpeedCircBuffer.Data.AXIS_Y, SpeedCircBuffer.Size, accCircBuffIndexForFft);
+  MotionSP_fftInBuild(AccAxesArray_fftIn.AXIS_Z, MotionSP_Parameters.FftSize, SpeedCircBuffer.Data.AXIS_Z, SpeedCircBuffer.Size, accCircBuffIndexForFft);
 
   /* ------------------ First Axis: Analysis on X-Acceleration--------------*/
   /* Apply the Windowing before to perform FFT */
