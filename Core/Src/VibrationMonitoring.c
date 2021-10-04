@@ -380,11 +380,12 @@ uint8_t Collect_Data(void)
           MotionSP_CreateAccCircBuffer(&AccCircBuffer, single_data_no_dc);
 
           /* TIME DOMAIN ANALYSIS: Speed RMS Moving AVERAGE */
-         MotionSP_evalSpeedFromAccelero(&SpeedTimeDomain, &AccCircBuffer, RestartFlag);
+         //MotionSP_evalSpeedFromAccelero(&SpeedTimeDomain, &AccCircBuffer, RestartFlag);
               // Delete the Speed DC components
-         MotionSP_speedDelOffset(&SpeedTimeDomain_noDC, &SpeedTimeDomain, DC_SMOOTH, RestartFlag);
+         //MotionSP_speedDelOffset(&SpeedTimeDomain_noDC, &SpeedTimeDomain, DC_SMOOTH, RestartFlag);
+         //MotionSP_accDelOffset(&SpeedTimeDomain_noDC, &SpeedTimeDomain, DC_SMOOTH, RestartFlag);
 
-          MotionSP_CreateAccCircBuffer(&SpeedCircBuffer, SpeedTimeDomain);
+
 
           if (AccCircBuffer.Ovf == 1)
           {
@@ -393,6 +394,8 @@ uint8_t Collect_Data(void)
           }
 
           MotionSP_TimeDomainProcess(&sTimeDomain, (Td_Type_t)MotionSP_Parameters.td_type, RestartFlag);
+
+          MotionSP_CreateAccCircBuffer(&SpeedCircBuffer, SpeedTimeDomain_noDC);
 //          MotionSP_FillSpeedCircBuffer();
           RestartFlag = 0;
           break;

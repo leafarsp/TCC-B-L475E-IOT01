@@ -83,6 +83,9 @@ sSubrange_t SRAmplitude;                        //!< X-Y-Z Threshold Amplitude S
 sSubrange_t SRBinVal;                           //!< X-Y-Z Threshold Bin Frequency Subrange Arrays
 #endif /* USE_SUBRANGE */
 
+float fr_resolution;
+float amplitude_factor;
+
 /**
   * @}
   */
@@ -183,17 +186,27 @@ void MotionSP_evalSpeedFromAccelero(SensorVal_f_t *pDstArr,
   else
   {     // vi+1 = vi +[(1-GAMMA)*DELTA_T]*ai + (GAMMA*DELTA_T)*ai+1 /* in mm/s
 
+//    pDstArr->AXIS_X = DstArrPre.AXIS_X +
+//                      (((1-GAMMA)*DeltaT)*(pSrcArr->Data.AXIS_X[IndexPre]))*1000+
+//                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_X[IndexCurr]))*1000;
+
     pDstArr->AXIS_X = DstArrPre.AXIS_X +
-                      (((1-GAMMA)*DeltaT)*(pSrcArr->Data.AXIS_X[IndexPre]))+
-                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_X[IndexCurr]))*1000;
+                          (((0.5)*DeltaT*100000)*((pSrcArr->Data.AXIS_X[IndexPre])+(pSrcArr->Data.AXIS_X[IndexCurr])));
+
+//    pDstArr->AXIS_Y = DstArrPre.AXIS_Y +
+//                      (((1-GAMMA)*DeltaT)*(pSrcArr->Data.AXIS_Y[IndexPre]))*1000+
+//                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_Y[IndexCurr]))*1000;
 
     pDstArr->AXIS_Y = DstArrPre.AXIS_Y +
-                      (((1-GAMMA)*DeltaT)*(pSrcArr->Data.AXIS_Y[IndexPre]))+
-                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_Y[IndexCurr]))*1000;
+                              (((0.5)*DeltaT*100000)*((pSrcArr->Data.AXIS_Y[IndexPre])+(pSrcArr->Data.AXIS_Y[IndexCurr])));
+
+
+//    pDstArr->AXIS_Z = DstArrPre.AXIS_Z +
+//                      (((1-GAMMA)*DeltaT)*(pSrcArr->Data.AXIS_Z[IndexPre]))*1000+
+//                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_Z[IndexCurr]))*1000;
 
     pDstArr->AXIS_Z = DstArrPre.AXIS_Z +
-                      (((1-GAMMA)*DeltaT)*(pSrcArr->Data.AXIS_Z[IndexPre]))+
-                      (GAMMA*DeltaT*(pSrcArr->Data.AXIS_Z[IndexCurr]))*1000;
+                                  (((0.5)*DeltaT*100000)*((pSrcArr->Data.AXIS_Z[IndexPre])+(pSrcArr->Data.AXIS_Z[IndexCurr])));
 
     memcpy((void *)&DstArrPre, (void *)pDstArr, sizeof(SensorVal_f_t));
   }
@@ -996,9 +1009,14 @@ void MotionSP_FrequencyDomainProcess(void)
   }
 
   printf("\n\nFFT:\n");
+  fr_resolution = AcceleroODR.Frequency / ((float)(MotionSP_Parameters.FftSize));
+  amplitude_factor = (float) (MotionSP_Parameters.FftSize/8);
     for(int i=0;i<MotionSP_Parameters.FftSize/2;i++)
     {
-  	  printf("Fr,%d,x,%f,y,%f,z,%f\n",i,fftOutX[i],fftOutY[i],fftOutZ[i]);
+  	  printf("Fr,%f,x,%f,y,%f,z,%f\n",((float) i) * fr_resolution,
+  			  fftOutX[i] / amplitude_factor,
+			  fftOutY[i] / amplitude_factor,
+			  fftOutZ[i] / amplitude_factor);
     }
   printf("\n\n");
 }

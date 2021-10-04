@@ -7,11 +7,11 @@ MEMS/Target/app_mems_int_pin_a_interface.o: \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l475xx.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/core_cm4.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_version.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_compiler.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_gcc.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/mpu_armv7.h \
+ ../Drivers/CMSIS/Include/core_cm4.h \
+ ../Drivers/CMSIS/Include/cmsis_version.h \
+ ../Drivers/CMSIS/Include/cmsis_compiler.h \
+ ../Drivers/CMSIS/Include/cmsis_gcc.h \
+ ../Drivers/CMSIS/Include/mpu_armv7.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc_ex.h \
@@ -47,15 +47,15 @@ MEMS/Target/app_mems_int_pin_a_interface.o: \
 
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l475xx.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/core_cm4.h:
+../Drivers/CMSIS/Include/core_cm4.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_version.h:
+../Drivers/CMSIS/Include/cmsis_version.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_compiler.h:
+../Drivers/CMSIS/Include/cmsis_compiler.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_gcc.h:
+../Drivers/CMSIS/Include/cmsis_gcc.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/mpu_armv7.h:
+../Drivers/CMSIS/Include/mpu_armv7.h:
 
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h:
 

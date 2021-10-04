@@ -142,8 +142,19 @@ int main(void)
      if (Collect_Data())
      {
     	 printf("\n\nSOF\n", EOF);
-    	 printf("Dados de aquisicao,Fr,%f,Pr,%f,Tau,%f ", AcceleroODR.Frequency, AcceleroODR.Period, AcceleroODR.Tau);
-  /* Perform Frequency Domain analysis if buffer is full */
+    	 printf("Dados de aquisicao,Fr,%f,Pr,%f,Tau,%f,Amostras,%d,FFT_fr_res,%f\n",
+    			 AcceleroODR.Frequency, AcceleroODR.Period, AcceleroODR.Tau, AccCircBuffer.Size,
+				 AcceleroODR.Frequency / ((float)(MotionSP_Parameters.FftSize)));
+    	 printf("RMS-ACC,ACC_rms_x,%f,ACC_rms_y,%f,ACC_rms_z,%f\n",sTimeDomain.AccRms.AXIS_X,
+    			 	 	 	 	 	 	 	 	 	 	 	     sTimeDomain.AccRms.AXIS_Y,
+																 sTimeDomain.AccRms.AXIS_Z);
+    	 printf("RMS-Speed,Speed_rms_x,%f,Speed_rms_y,%f,Speed_rms_z,%f\n",sTimeDomain.SpeedRms.AXIS_X/100,
+    	     			 	 	 	 	 	 	 	 	 	 	 	     sTimeDomain.SpeedRms.AXIS_Y/100,
+    	 																 sTimeDomain.SpeedRms.AXIS_Z/100);
+    	 printf("Pico-ACC,Pico_acc_x,%f,Pico_acc_y,%f,Pico_acc_z,%f\n",sTimeDomain.AccPeak.AXIS_X,
+    			 	 	 	 	 	 	 	 	 	 	 	 	 	 sTimeDomain.AccPeak.AXIS_Y,
+    	 														     sTimeDomain.AccPeak.AXIS_Z);
+    	 /* Perform Frequency Domain analysis if buffer is full */
 
         if (fftIsEnabled == 1)
         {

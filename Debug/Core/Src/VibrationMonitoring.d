@@ -6,11 +6,11 @@ Core/Src/VibrationMonitoring.o: ../Core/Src/VibrationMonitoring.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l475xx.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/core_cm4.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_version.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_compiler.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_gcc.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/mpu_armv7.h \
+ ../Drivers/CMSIS/Include/core_cm4.h \
+ ../Drivers/CMSIS/Include/cmsis_version.h \
+ ../Drivers/CMSIS/Include/cmsis_compiler.h \
+ ../Drivers/CMSIS/Include/cmsis_gcc.h \
+ ../Drivers/CMSIS/Include/mpu_armv7.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc_ex.h \
@@ -38,8 +38,7 @@ Core/Src/VibrationMonitoring.o: ../Core/Src/VibrationMonitoring.c \
  ../MEMS/App/app_mems.h \
  D:/TCC/B-L475E-IOT01A/GatewayWegnology/Middlewares/STM32_MotionSP_Library/Inc/MotionSP.h \
  D:/TCC/B-L475E-IOT01A/GatewayWegnology/Middlewares/STM32_MotionSP_Library/Inc/MotionSP_Config.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/arm_math.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/core_cm4.h \
+ ../Drivers/CMSIS/Include/arm_math.h ../Drivers/CMSIS/Include/core_cm4.h \
  ../Core/Inc/sensor_def.h ../MEMS/Target/custom_motion_sensors.h \
  ../MEMS/Target/custom_mems_conf.h \
  ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1_bus.h \
@@ -66,15 +65,15 @@ Core/Src/VibrationMonitoring.o: ../Core/Src/VibrationMonitoring.c \
 
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l475xx.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/core_cm4.h:
+../Drivers/CMSIS/Include/core_cm4.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_version.h:
+../Drivers/CMSIS/Include/cmsis_version.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_compiler.h:
+../Drivers/CMSIS/Include/cmsis_compiler.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/cmsis_gcc.h:
+../Drivers/CMSIS/Include/cmsis_gcc.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/mpu_armv7.h:
+../Drivers/CMSIS/Include/mpu_armv7.h:
 
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h:
 
@@ -130,9 +129,9 @@ D:/TCC/B-L475E-IOT01A/GatewayWegnology/Middlewares/STM32_MotionSP_Library/Inc/Mo
 
 D:/TCC/B-L475E-IOT01A/GatewayWegnology/Middlewares/STM32_MotionSP_Library/Inc/MotionSP_Config.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/arm_math.h:
+../Drivers/CMSIS/Include/arm_math.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Drivers/CMSIS/Include/core_cm4.h:
+../Drivers/CMSIS/Include/core_cm4.h:
 
 ../Core/Inc/sensor_def.h:
 
