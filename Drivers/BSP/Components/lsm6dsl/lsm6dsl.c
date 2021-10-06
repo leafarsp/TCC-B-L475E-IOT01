@@ -39,8 +39,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "lsm6dsl.h"
 
-
-int32_t LSM6DSL_ACC_Set_INT1_DRDY(LSM6DSL_Object_t *pObj, uint8_t Val);
 /** @addtogroup BSP
   * @{
   */
@@ -375,8 +373,6 @@ void LSM6DSL_GyroReadXYZAngRate(float *pfData)
     pfData[i]=( float )(pnRawData[i] * sensitivity);
   }
 }
-
-
 
 /**
   * @}

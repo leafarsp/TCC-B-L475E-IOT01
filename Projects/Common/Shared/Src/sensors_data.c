@@ -109,9 +109,7 @@ int init_sensors(void)
   
   if (ACCELERO_OK != BSP_ACCELERO_Init())
   {
-
-
-	msg_error("BSP_ACCELERO_Init() returns %d\n", ret);
+    msg_error("BSP_ACCELERO_Init() returns %d\n", ret);
     ret = -1;
   }
   

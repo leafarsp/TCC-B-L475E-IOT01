@@ -1,5 +1,5 @@
 Application/Wifi/wifi.o: \
- D:/TCC/B-L475E-IOT01A/TCC_estudo_vibracao/Projects/B-L475E-IOT01/Applications/Cloud/GenericMQTT/Src/wifi.c \
+ D:/TCC/B-L475E-IOT01A/TCC_Generic_MQTT/Projects/B-L475E-IOT01/Applications/Cloud/GenericMQTT/Src/wifi.c \
  ../../../Inc/wifi.h \
  ../../../../../../../../Drivers/BSP/Components/es_wifi/es_wifi.h \
  ../../../Inc/es_wifi_conf.h ../../../Inc/es_wifi_io.h \
@@ -9,11 +9,11 @@ Application/Wifi/wifi.o: \
  ../../../../../../../../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h \
  ../../../../../../../../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h \
  ../../../../../../../../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l475xx.h \
- D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/core_cm4.h \
- D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/core_cmInstr.h \
- D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/cmsis_gcc.h \
- D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/core_cmFunc.h \
- D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/core_cmSimd.h \
+ ../../../../../../../../Drivers/CMSIS/Include/core_cm4.h \
+ ../../../../../../../../Drivers/CMSIS/Include/core_cmInstr.h \
+ ../../../../../../../../Drivers/CMSIS/Include/cmsis_gcc.h \
+ ../../../../../../../../Drivers/CMSIS/Include/core_cmFunc.h \
+ ../../../../../../../../Drivers/CMSIS/Include/core_cmSimd.h \
  ../../../../../../../../Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h \
  ../../../../../../../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  ../../../../../../../../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc_ex.h \
@@ -60,15 +60,15 @@ Application/Wifi/wifi.o: \
 
 ../../../../../../../../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l475xx.h:
 
-D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/core_cm4.h:
+../../../../../../../../Drivers/CMSIS/Include/core_cm4.h:
 
-D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/core_cmInstr.h:
+../../../../../../../../Drivers/CMSIS/Include/core_cmInstr.h:
 
-D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/cmsis_gcc.h:
+../../../../../../../../Drivers/CMSIS/Include/cmsis_gcc.h:
 
-D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/core_cmFunc.h:
+../../../../../../../../Drivers/CMSIS/Include/core_cmFunc.h:
 
-D:/TCC/B-L475E-IOT01A/STM32CubeExpansion_Cloud_CLD_GEN_V1.0.0/Drivers/CMSIS/Include/core_cmSimd.h:
+../../../../../../../../Drivers/CMSIS/Include/core_cmSimd.h:
 
 ../../../../../../../../Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h:
 

@@ -8,4 +8,4 @@ GenericMQTTXcubeSample.c:904:6:free_device_config	8	static
 GenericMQTTXcubeSample.c:855:5:parse_and_fill_device_config	24	static
 GenericMQTTXcubeSample.c:184:6:app_needs_device_keypair	16	static
 GenericMQTTXcubeSample.c:935:9:comp_left_ms	8	static
-GenericMQTTXcubeSample.c:319:6:genericmqtt_client_XCube_sample_run	392	static
+GenericMQTTXcubeSample.c:319:6:genericmqtt_client_XCube_sample_run	400	static

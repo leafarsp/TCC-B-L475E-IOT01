@@ -45,16 +45,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l475e_iot01_accelero.h"
-
-#include "lsm6dsl.h"
-#include "stm32l475e_iot01_accelero_ex.h"
-
-//void *MotionCompObj[B_L475E_IOT01_MOTION_INSTANCES_NBR];
-
-int32_t BSP_MOTION_SENSOR_Set_INT1_DRDY(uint32_t Instance, uint8_t Status);
-static int32_t LSM6DSL_0_Probe(uint32_t Functions);
-
-
 /** @addtogroup BSP
   * @{
   */ 
@@ -75,8 +65,6 @@ static ACCELERO_DrvTypeDef *AccelerometerDrv;
   * @}
   */
 
-
-#define MOTION_ACCELERO         2U
 /** @defgroup STM32L475E_IOT01_ACCELERO_Private_Functions ACCELERO Private Functions
   * @{
   */ 
@@ -87,135 +75,38 @@ static ACCELERO_DrvTypeDef *AccelerometerDrv;
 ACCELERO_StatusTypeDef BSP_ACCELERO_Init(void)
 {  
   ACCELERO_StatusTypeDef ret = ACCELERO_OK;
+  uint16_t ctrl = 0x0000;
+  ACCELERO_InitTypeDef LSM6DSL_InitStructure;
+
+  if(Lsm6dslAccDrv.ReadID() != LSM6DSL_ACC_GYRO_WHO_AM_I)
+  {
+    ret = ACCELERO_ERROR;
+  }
+  else
+  {
+    /* Initialize the ACCELERO accelerometer driver structure */
+    AccelerometerDrv = &Lsm6dslAccDrv;
   
-  if (LSM6DSL_0_Probe(MOTION_ACCELERO) != BSP_ERROR_NONE)
-       {
-//         return BSP_ERROR_NO_INIT;
-       }
+    /* MEMS configuration ------------------------------------------------------*/
+    /* Fill the ACCELERO accelerometer structure */
+    LSM6DSL_InitStructure.AccOutput_DataRate = LSM6DSL_ODR_52Hz;
+    LSM6DSL_InitStructure.Axes_Enable = 0;
+    LSM6DSL_InitStructure.AccFull_Scale = LSM6DSL_ACC_FULLSCALE_2G;
+    LSM6DSL_InitStructure.BlockData_Update = LSM6DSL_BDU_BLOCK_UPDATE;
+    LSM6DSL_InitStructure.High_Resolution = 0;
+    LSM6DSL_InitStructure.Communication_Mode = 0;
+        
+    /* Configure MEMS: data rate, full scale  */
+    ctrl =  (LSM6DSL_InitStructure.AccOutput_DataRate | LSM6DSL_InitStructure.AccFull_Scale);
+    
+    /* Configure MEMS: BDU and Auto-increment for multi read/write */
+    ctrl |= ((LSM6DSL_InitStructure.BlockData_Update | LSM6DSL_ACC_GYRO_IF_INC_ENABLED) << 8);
+
+    /* Configure the ACCELERO accelerometer main parameters */
+    AccelerometerDrv->Init(ctrl);
+  }  
 
   return ret;
-}
-
-/**
- * @brief  Register Bus IOs for instance 0 if component ID is OK
- * @retval BSP status
- */
-static int32_t LSM6DSL_0_Probe(uint32_t Functions)
-{
-  LSM6DSL_IO_t            io_ctx;
-  uint8_t                 id;
-  static LSM6DSL_Object_t lsm6dsl_obj_0;
-  LSM6DSL_Capabilities_t  cap;
-  int32_t ret = BSP_ERROR_NONE;
-
-  /* Configure the accelero driver */
-  io_ctx.BusType     = LSM6DSL_I2C_BUS; /* I2C */
-  io_ctx.Address     = LSM6DSL_I2C_ADD_H;
-  io_ctx.Init        = BSP_I2C1_Init;
-  io_ctx.DeInit      = BSP_I2C1_DeInit;
-  io_ctx.ReadReg     = BSP_I2C1_ReadReg;
-  io_ctx.WriteReg    = BSP_I2C1_WriteReg;
-  io_ctx.GetTick     = BSP_GetTick;
-//
-
-
-//  if (LSM6DSL_RegisterBusIO(&lsm6dsl_obj_0, &io_ctx) != LSM6DSL_OK)
-//  {
-//    ret = BSP_ERROR_UNKNOWN_COMPONENT;
-//  }
-//  else if (LSM6DSL_ReadID(&lsm6dsl_obj_0, &id) != LSM6DSL_OK)
-//  {
-//    ret = BSP_ERROR_UNKNOWN_COMPONENT;
-//  }
-//  else if (id != LSM6DSL_ID)
-//  {
-//    ret = BSP_ERROR_UNKNOWN_COMPONENT;
-//  }
-//  else
-//  {
-//    (void)LSM6DSL_GetCapabilities(&lsm6dsl_obj_0, &cap);
-//    MotionCtx[IKS01A2_LSM6DSL_0].Functions = ((uint32_t)cap.Gyro) | ((uint32_t)cap.Acc << 1) | ((uint32_t)cap.Magneto << 2);
-//
-//    MotionCompObj[IKS01A2_LSM6DSL_0] = &lsm6dsl_obj_0;
-//    /* The second cast (void *) is added to bypass Misra R11.3 rule */
-//    MotionDrv[IKS01A2_LSM6DSL_0] = (MOTION_SENSOR_CommonDrv_t *)(void *)&LSM6DSL_COMMON_Driver;
-//
-//    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_GYRO) == MOTION_GYRO) && (cap.Gyro == 1U))
-//    {
-//      /* The second cast (void *) is added to bypass Misra R11.3 rule */
-//      MotionFuncDrv[IKS01A2_LSM6DSL_0][FunctionIndex[MOTION_GYRO]] = (MOTION_SENSOR_FuncDrv_t *)(void *)&LSM6DSL_GYRO_Driver;
-//
-//      if (MotionDrv[IKS01A2_LSM6DSL_0]->Init(MotionCompObj[IKS01A2_LSM6DSL_0]) != LSM6DSL_OK)
-//      {
-//        ret = BSP_ERROR_COMPONENT_FAILURE;
-//      }
-//      else
-//      {
-//        ret = BSP_ERROR_NONE;
-//      }
-//    }
-//    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_ACCELERO) == MOTION_ACCELERO) && (cap.Acc == 1U))
-//    {
-//      /* The second cast (void *) is added to bypass Misra R11.3 rule */
-//      MotionFuncDrv[IKS01A2_LSM6DSL_0][FunctionIndex[MOTION_ACCELERO]] = (MOTION_SENSOR_FuncDrv_t *)(
-//            void *)&LSM6DSL_ACC_Driver;
-//
-//      if (MotionDrv[IKS01A2_LSM6DSL_0]->Init(MotionCompObj[IKS01A2_LSM6DSL_0]) != LSM6DSL_OK)
-//      {
-//        ret = BSP_ERROR_COMPONENT_FAILURE;
-//      }
-//      else
-//      {
-//        ret = BSP_ERROR_NONE;
-//      }
-//    }
-//    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_MAGNETO) == MOTION_MAGNETO))
-//    {
-//      /* Return an error if the application try to initialize a function not supported by the component */
-//      ret = BSP_ERROR_COMPONENT_FAILURE;
-//    }
-//  }
-  return ret;
-}
-
-/**
-  * @brief  Initialize ACCELEROMETER extended features.
-  * @retval None.
-  */
-int32_t BSP_extended_init_accel (void){
-
-
-
-	//disable Hi-Pass Filter
-
-	//Enable DDRY() - Data Ready interruption pin
-//	/* Enable DRDY */
-	  if (BSP_MOTION_SENSOR_Set_INT1_DRDY(BSP_LSM6DSL_0, PROPERTY_ENABLE) != BSP_ERROR_NONE)
-	  {
-	    return 0;
-	  }
-
-}
-
-/**
- * @brief  Set DRDY interrupt on INT1 pin (available only for ISM330DLC sensor)
- * @param  Instance the device instance
- * @param  Status DRDY interrupt on INT1 pin
- * @retval BSP status
- */
-
-int32_t BSP_MOTION_SENSOR_Set_INT1_DRDY(uint32_t Instance, uint8_t Status)
-{
-	int32_t ret;
-	  if (LSM6DSL_ACC_Set_INT1_DRDY(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
-	  {
-		ret = BSP_ERROR_COMPONENT_FAILURE;
-	  }
-	  else
-	  {
-		ret = BSP_ERROR_NONE;
-	  }
-	  return ret;
 }
 
 /**

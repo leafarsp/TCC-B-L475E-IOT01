@@ -1,6 +1,6 @@
 Project: B-L475E-IOT01_GenericMQTT
 Converter: ST System Workbench for STM32 project converter
-Date: 20210820
+Date: 20211006
 
 Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.noexceptions is no longer supported
 Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.nortti is no longer supported
