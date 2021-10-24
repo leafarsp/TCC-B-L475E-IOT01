@@ -36,8 +36,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1_errno.h \
  ../Core/Inc/dfsdm.h ../Core/Inc/main.h ../Core/Inc/tim.h \
  ../Core/Inc/gpio.h ../MEMS/App/app_mems.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Middlewares/STM32_MotionSP_Library/Inc/MotionSP.h \
- D:/TCC/B-L475E-IOT01A/GatewayWegnology/Middlewares/STM32_MotionSP_Library/Inc/MotionSP_Config.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Middlewares/STM32_MotionSP_Library/Inc/MotionSP.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Middlewares/STM32_MotionSP_Library/Inc/MotionSP_Config.h \
  ../Drivers/CMSIS/Include/arm_math.h ../Drivers/CMSIS/Include/core_cm4.h \
  ../Core/Inc/sensor_def.h
 
@@ -123,9 +123,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../MEMS/App/app_mems.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Middlewares/STM32_MotionSP_Library/Inc/MotionSP.h:
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Middlewares/STM32_MotionSP_Library/Inc/MotionSP.h:
 
-D:/TCC/B-L475E-IOT01A/GatewayWegnology/Middlewares/STM32_MotionSP_Library/Inc/MotionSP_Config.h:
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Middlewares/STM32_MotionSP_Library/Inc/MotionSP_Config.h:
 
 ../Drivers/CMSIS/Include/arm_math.h:
 
