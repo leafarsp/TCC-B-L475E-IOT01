@@ -27,6 +27,11 @@ Core/Src/VibrationMonitoring.o: ../Core/Src/VibrationMonitoring.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rng.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
@@ -34,13 +39,21 @@ Core/Src/VibrationMonitoring.o: ../Core/Src/VibrationMonitoring.c \
  ../MEMS/Target/app_mems_int_pin_a_interface.h \
  ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1.h \
  ../Core/Inc/b_l475e_iot01a1_conf.h \
- ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1_errno.h \
+ ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1_errno.h ../Core/Inc/rng.h \
+ ../Core/Inc/main.h ../Core/Inc/rtc.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/GenericMQTT/Inc/stm32l475e_iot01.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/version.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/timedate.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/net.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/iot_flash_config.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/msg.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/cloud.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/sensors_data.h \
  ../MEMS/App/app_mems.h \
  D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Middlewares/STM32_MotionSP_Library/Inc/MotionSP.h \
  D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Middlewares/STM32_MotionSP_Library/Inc/MotionSP_Config.h \
- ../Drivers/CMSIS/Include/arm_math.h ../Drivers/CMSIS/Include/core_cm4.h \
- ../Core/Inc/sensor_def.h ../MEMS/Target/custom_motion_sensors.h \
- ../MEMS/Target/custom_mems_conf.h \
+ ../Core/Inc/arm_math.h ../Core/Inc/sensor_def.h \
+ ../MEMS/Target/custom_motion_sensors.h ../MEMS/Target/custom_mems_conf.h \
  ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1_bus.h \
  ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1_errno.h \
  ../MEMS/Target/motion_sensor.h \
@@ -107,6 +120,16 @@ Core/Src/VibrationMonitoring.o: ../Core/Src/VibrationMonitoring.c \
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h:
 
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rng.h:
+
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h:
+
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h:
+
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h:
+
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h:
+
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h:
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
@@ -123,15 +146,35 @@ Core/Src/VibrationMonitoring.o: ../Core/Src/VibrationMonitoring.c \
 
 ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1_errno.h:
 
+../Core/Inc/rng.h:
+
+../Core/Inc/main.h:
+
+../Core/Inc/rtc.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/GenericMQTT/Inc/stm32l475e_iot01.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/version.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/timedate.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/net.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/iot_flash_config.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/msg.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/cloud.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/sensors_data.h:
+
 ../MEMS/App/app_mems.h:
 
 D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Middlewares/STM32_MotionSP_Library/Inc/MotionSP.h:
 
 D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Middlewares/STM32_MotionSP_Library/Inc/MotionSP_Config.h:
 
-../Drivers/CMSIS/Include/arm_math.h:
-
-../Drivers/CMSIS/Include/core_cm4.h:
+../Core/Inc/arm_math.h:
 
 ../Core/Inc/sensor_def.h:
 

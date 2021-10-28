@@ -20,21 +20,27 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dfsdm.h"
+#include "rng.h"
+#include "rtc.h"
+#include "spi.h"
 #include "tim.h"
 #include "gpio.h"
 #include "app_mems.h"
-
-#define LSM6DSL_HP_DISABLE        0xFBU  /* Disable HP filter */
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "MotionSP.h"
 #include "sensor_def.h"
+//#include "stm32l4xx_hal_rng.h"
+//#include "stm32l4xx_hal_rtc.h"
+
 /* USER CODE END Includes */
-#define EOF -1
+
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 static UART_HandleTypeDef console_uart;
+static volatile uint8_t button_flags = 0;
+pub_data_t pub_data       = { MODEL_DEFAULT_MAC, 0 };
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -61,6 +67,10 @@ static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 
 static void Console_UART_Init(void);
+//RTC_HandleTypeDef hrtc;
+//RNG_HandleTypeDef hrng;
+net_hnd_t         hnet; /* Is initialized by cloud_main(). */
+void SPI_WIFI_ISR(void);
 
 
 /* USER CODE END PFP */
@@ -68,6 +78,7 @@ static void Console_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 //extern void BSP_COM_Init(COM_TypeDef COM, UART_HandleTypeDef *huart);
+extern void genericmqtt_client_XCube_sample_run(void);
 
 /* USER CODE END 0 */
 
@@ -102,7 +113,10 @@ int main(void)
   MX_GPIO_Init();
   MX_DFSDM1_Init();
   MX_TIM6_Init();
-  //MX_MEMS_Init();
+  MX_SPI1_Init();
+  MX_RNG_Init();
+  MX_RTC_Init();
+  MX_MEMS_Init();
 
   /* Initialize interrupts */
   MX_NVIC_Init();
@@ -114,6 +128,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
 //  HAL_TIM_Base_Start_IT(&htim6);
   printf("Hello\n");
   printf("Inicializando a placa\n");
@@ -126,92 +141,92 @@ int main(void)
   {
 	  printf("Problema na inicialização da placa.\n");
   }
-
-  while (1)
-  {
-
-	//HAL_UART_Transmit(&huart1, "Hello", 5, 3000);
-    /* USER CODE END WHILE */
-
-  //MX_MEMS_Process();
-    /* USER CODE BEGIN 3 */
-
-
-
-	  //Init_Demo();
-     if (Collect_Data())
-     {
-    	 printf("\n\nSOF\n", EOF);
-    	 printf("Dados de aquisicao,Fr,%f,Pr,%f,Tau,%f,Amostras,%d,FFT_fr_res,%f\n",
-    			 AcceleroODR.Frequency, AcceleroODR.Period, AcceleroODR.Tau, AccCircBuffer.Size,
-				 AcceleroODR.Frequency / ((float)(MotionSP_Parameters.FftSize)));
-    	 printf("RMS-ACC,ACC_rms_x,%f,ACC_rms_y,%f,ACC_rms_z,%f\n",sTimeDomain.AccRms.AXIS_X,
-    			 	 	 	 	 	 	 	 	 	 	 	     sTimeDomain.AccRms.AXIS_Y,
-																 sTimeDomain.AccRms.AXIS_Z);
-    	 printf("RMS-Speed,Speed_rms_x,%f,Speed_rms_y,%f,Speed_rms_z,%f\n",sTimeDomain.SpeedRms.AXIS_X/100,
-    	     			 	 	 	 	 	 	 	 	 	 	 	     sTimeDomain.SpeedRms.AXIS_Y/100,
-    	 																 sTimeDomain.SpeedRms.AXIS_Z/100);
-    	 printf("Pico-ACC,Pico_acc_x,%f,Pico_acc_y,%f,Pico_acc_z,%f\n",sTimeDomain.AccPeak.AXIS_X,
-    			 	 	 	 	 	 	 	 	 	 	 	 	 	 sTimeDomain.AccPeak.AXIS_Y,
-    	 														     sTimeDomain.AccPeak.AXIS_Z);
-    	 /* Perform Frequency Domain analysis if buffer is full */
-
-        if (fftIsEnabled == 1)
-        {
-          fftIsEnabled = 0;
-
-          if ((HAL_GetTick() - StartTick) >= MotionSP_Parameters.tacq)
-          {
-            FinishAvgFlag = 1;
-            StartTick = HAL_GetTick();
-          }
-
-          MotionSP_FrequencyDomainProcess();
-        }
-        /* Send data to GUI if total acquisition time is reached */
-              if (FinishAvgFlag == 1)
-              {
-                FinishAvgFlag = 0;
-
-                /* Send all 3 axes data to Unicleo-GUI */
-//                for (axis_active = X_AXIS; axis_active < NUM_AXES; axis_active++)
-//                {
-//                  INIT_STREAMING_HEADER(&msg_dat);
-//                  Get_Msg(&msg_dat, axis_active);
-////                  if (axis_active == X_AXIS)
-////                  {
-////                	  printf("\n\n\n\n\n\n\n\nEixoX:\n");
-////                  } else if (axis_active == Y_AXIS)
-////                  {
-////                	  printf("EixoY:\n");
-////                  } else if (axis_active == Z_AXIS)
-////                  {
-////                	  printf("EixoZ:\n");
-////                  }
-////                  UART_SendMsg(&msg_dat);
-//                }
-                printf("\n\n\n ACC:\n");
-                for (int i=0;i<AccCircBuffer.Size;i++){
-                	printf("t_a,%d,x,%f,y,%f,z,%f\n",i, AccCircBuffer.Data.AXIS_X[i], AccCircBuffer.Data.AXIS_Y[i], AccCircBuffer.Data.AXIS_Z[i]);
-
-                   }
-
-                printf("\n\n\n Speed:\n");
-				for (int i=0;i<AccCircBuffer.Size;i++){
-					printf("t_s,%d,x,%f,y,%f,z,%f\n",i, SpeedCircBuffer.Data.AXIS_X[i], SpeedCircBuffer.Data.AXIS_Y[i], SpeedCircBuffer.Data.AXIS_Z[i]);
-
-				   }
-                RestartFlag = 1;
-              }
-
-              printf("EOF\n", EOF);
-              printf("%d", EOF);
-              HAL_Delay(100);
-     }
-  }
+  genericmqtt_client_XCube_sample_run();
+//  while (1)
+//  {
+//
+//	//HAL_UART_Transmit(&huart1, "Hello", 5, 3000);
+//    /* USER CODE END WHILE */
+//
+//  MX_MEMS_Process();
+//    /* USER CODE BEGIN 3 */
+//
+//
+//
+//	  //Init_Demo();
+//     if (Collect_Data())
+//     {
+//    	 printf("\n\nSOF\n", EOF);
+//    	 printf("Dados de aquisicao,Fr,%f,Pr,%f,Tau,%f,Amostras,%d,FFT_fr_res,%f\n",
+//    			 AcceleroODR.Frequency, AcceleroODR.Period, AcceleroODR.Tau, AccCircBuffer.Size,
+//				 AcceleroODR.Frequency / ((float)(MotionSP_Parameters.FftSize)));
+//    	 printf("RMS-ACC,ACC_rms_x,%f,ACC_rms_y,%f,ACC_rms_z,%f\n",sTimeDomain.AccRms.AXIS_X,
+//    			 	 	 	 	 	 	 	 	 	 	 	     sTimeDomain.AccRms.AXIS_Y,
+//																 sTimeDomain.AccRms.AXIS_Z);
+//    	 printf("RMS-Speed,Speed_rms_x,%f,Speed_rms_y,%f,Speed_rms_z,%f\n",sTimeDomain.SpeedRms.AXIS_X/100,
+//    	     			 	 	 	 	 	 	 	 	 	 	 	     sTimeDomain.SpeedRms.AXIS_Y/100,
+//    	 																 sTimeDomain.SpeedRms.AXIS_Z/100);
+//    	 printf("Pico-ACC,Pico_acc_x,%f,Pico_acc_y,%f,Pico_acc_z,%f\n",sTimeDomain.AccPeak.AXIS_X,
+//    			 	 	 	 	 	 	 	 	 	 	 	 	 	 sTimeDomain.AccPeak.AXIS_Y,
+//    	 														     sTimeDomain.AccPeak.AXIS_Z);
+//    	 /* Perform Frequency Domain analysis if buffer is full */
+//
+//        if (fftIsEnabled == 1)
+//        {
+//          fftIsEnabled = 0;
+//
+//          if ((HAL_GetTick() - StartTick) >= MotionSP_Parameters.tacq)
+//          {
+//            FinishAvgFlag = 1;
+//            StartTick = HAL_GetTick();
+//          }
+//
+//          MotionSP_FrequencyDomainProcess();
+//        }
+//        /* Send data to GUI if total acquisition time is reached */
+//              if (FinishAvgFlag == 1)
+//              {
+//                FinishAvgFlag = 0;
+//
+//                /* Send all 3 axes data to Unicleo-GUI */
+////                for (axis_active = X_AXIS; axis_active < NUM_AXES; axis_active++)
+////                {
+////                  INIT_STREAMING_HEADER(&msg_dat);
+////                  Get_Msg(&msg_dat, axis_active);
+//////                  if (axis_active == X_AXIS)
+//////                  {
+//////                	  printf("\n\n\n\n\n\n\n\nEixoX:\n");
+//////                  } else if (axis_active == Y_AXIS)
+//////                  {
+//////                	  printf("EixoY:\n");
+//////                  } else if (axis_active == Z_AXIS)
+//////                  {
+//////                	  printf("EixoZ:\n");
+//////                  }
+//////                  UART_SendMsg(&msg_dat);
+////                }
+//                printf("\n\n\n ACC:\n");
+//                for (int i=0;i<AccCircBuffer.Size;i++){
+//                	printf("t_a,%d,x,%f,y,%f,z,%f\n",i, AccCircBuffer.Data.AXIS_X[i], AccCircBuffer.Data.AXIS_Y[i], AccCircBuffer.Data.AXIS_Z[i]);
+//
+//                   }
+//
+//                printf("\n\n\n Speed:\n");
+//				for (int i=0;i<AccCircBuffer.Size;i++){
+//					printf("t_s,%d,x,%f,y,%f,z,%f\n",i, SpeedCircBuffer.Data.AXIS_X[i], SpeedCircBuffer.Data.AXIS_Y[i], SpeedCircBuffer.Data.AXIS_Z[i]);
+//
+//				   }
+//                RestartFlag = 1;
+//              }
+//
+//              printf("EOF\n", EOF);
+//              printf("%d", EOF);
+//              HAL_Delay(100);
+//     }
+//  }
   /* USER CODE END 3 */
-
 }
+
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -234,8 +249,10 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE|RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_LSE
+                              |RCC_OSCILLATORTYPE_MSI;
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
   RCC_OscInitStruct.MSICalibrationValue = 0;
   RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
@@ -431,6 +448,105 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //  /* GPIO pins clock, FMC clock and DMA clock can be shut down in the application
 //     by surcharging this __weak function */
 //}
+/**
+  * @brief Set LED state
+  */
+void Led_SetState(bool on)
+{
+  if (on == true)
+  {
+    BSP_LED_On(LED_GREEN);
+  }
+  else
+  {
+    BSP_LED_Off(LED_GREEN);
+  }
+}
+
+/**
+ * @brief Blink LED for 'count' cycles of 'period' period and 'duty' ON duration.
+ * duty < 0 tells to start with an OFF state.
+ */
+void Led_Blink(int period, int duty, int count)
+{
+  if ( (duty > 0) && (period >= duty) )
+  {
+    /*  Shape:   ____
+                  on |_off__ */
+    do
+    {
+      Led_SetState(true);
+      HAL_Delay(duty);
+      Led_SetState(false);
+      HAL_Delay(period - duty);
+    } while (count--);
+  }
+  if ( (duty < 0) && (period >= -duty) )
+  {
+    /*  Shape:         ____
+                __off_| on   */
+    do
+    {
+      Led_SetState(false);
+      HAL_Delay(period + duty);
+      Led_SetState(true);
+      HAL_Delay(-duty);
+    } while (count--);
+  }
+}
+
+/**
+  * @brief Update button ISR status
+  */
+static void Button_ISR(void)
+{
+  button_flags++;
+}
+
+
+/**
+  * @brief Waiting for button to be pushed
+  */
+uint8_t Button_WaitForPush(uint32_t delay)
+{
+  uint32_t time_out = HAL_GetTick()+delay;
+  do
+  {
+    if (button_flags > 1)
+    {
+      button_flags = 0;
+      return BP_MULTIPLE_PUSH;
+    }
+
+    if (button_flags == 1)
+    {
+      button_flags = 0;
+      return BP_SINGLE_PUSH;
+    }
+  }
+  while( HAL_GetTick() < time_out);
+  return BP_NOT_PUSHED;
+}
+
+/**
+  * @brief Waiting for button to be pushed
+  */
+uint8_t Button_WaitForMultiPush(uint32_t delay)
+{
+  HAL_Delay(delay);
+  if (button_flags > 1)
+  {
+    button_flags = 0;
+    return BP_MULTIPLE_PUSH;
+  }
+
+  if (button_flags == 1)
+  {
+    button_flags = 0;
+    return BP_SINGLE_PUSH;
+  }
+  return BP_NOT_PUSHED;
+}
 
 
 /* USER CODE END 4 */

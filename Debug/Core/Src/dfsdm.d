@@ -26,6 +26,11 @@ Core/Src/dfsdm.o: ../Core/Src/dfsdm.c ../Core/Inc/dfsdm.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rng.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
@@ -34,7 +39,15 @@ Core/Src/dfsdm.o: ../Core/Src/dfsdm.c ../Core/Inc/dfsdm.h \
  ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1.h \
  ../Core/Inc/b_l475e_iot01a1_conf.h \
  ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1_errno.h \
- ../Core/Inc/main.h
+ ../Core/Inc/main.h ../Core/Inc/rng.h ../Core/Inc/rtc.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/GenericMQTT/Inc/stm32l475e_iot01.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/version.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/timedate.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/net.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/iot_flash_config.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/msg.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/cloud.h \
+ D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/sensors_data.h
 
 ../Core/Inc/dfsdm.h:
 
@@ -94,6 +107,16 @@ Core/Src/dfsdm.o: ../Core/Src/dfsdm.c ../Core/Inc/dfsdm.h \
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h:
 
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rng.h:
+
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h:
+
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h:
+
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h:
+
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h:
+
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h:
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
@@ -111,3 +134,23 @@ Core/Src/dfsdm.o: ../Core/Src/dfsdm.c ../Core/Inc/dfsdm.h \
 ../Drivers/BSP/B-L475E-IOT01A1/b_l475e_iot01a1_errno.h:
 
 ../Core/Inc/main.h:
+
+../Core/Inc/rng.h:
+
+../Core/Inc/rtc.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/GenericMQTT/Inc/stm32l475e_iot01.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/version.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/timedate.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/net.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/iot_flash_config.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/msg.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/cloud.h:
+
+D:/TCC/B-L475E-IOT01A/GatewayWegnologyFFT/Application/Common/include/sensors_data.h:

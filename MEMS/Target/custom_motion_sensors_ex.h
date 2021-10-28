@@ -99,8 +99,6 @@ int32_t CUSTOM_MOTION_SENSOR_FIFO_Set_BDR(uint32_t Instance, uint32_t Function, 
 int32_t CUSTOM_MOTION_SENSOR_FIFO_Get_Tag(uint32_t Instance, uint8_t *Tag);
 int32_t CUSTOM_MOTION_SENSOR_FIFO_Get_Axes(uint32_t Instance, uint32_t Function, CUSTOM_MOTION_SENSOR_Axes_t *Data);
 int32_t CUSTOM_MOTION_SENSOR_Set_SelfTest(uint32_t Instance, uint32_t Function, uint8_t Status);
-int32_t CUSTOM_MOTION_SENSOR_DRDY_Set_Mode(uint32_t Instance, uint8_t Status);
-int32_t CUSTOM_MOTION_SENSOR_Set_INT1_DRDY(uint32_t Instance, uint8_t Status);
 
 #ifdef __cplusplus
 }

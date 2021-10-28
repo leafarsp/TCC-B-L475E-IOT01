@@ -9,6 +9,10 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Middlewares/Third_Party/cJSON/subdir.mk
+-include Middlewares/Third_Party/MbedTLS/source/subdir.mk
+-include Middlewares/Third_Party/MQTTPacket/subdir.mk
+-include Middlewares/Third_Party/MQTTClient-C/subdir.mk
 -include Middlewares/STM32_MotionSP_Library/Src/subdir.mk
 -include MEMS/Target/subdir.mk
 -include MEMS/App/subdir.mk
@@ -23,10 +27,14 @@ RM := rm -rf
 -include Drivers/CMSIS/DSP_Lib/Source/ComplexMathFunctions/subdir.mk
 -include Drivers/CMSIS/DSP_Lib/Source/CommonTables/subdir.mk
 -include Drivers/CMSIS/DSP_Lib/Source/BasicMathFunctions/subdir.mk
+-include Drivers/BSP/es_wifi/subdir.mk
 -include Drivers/BSP/Components/lsm6dsl/subdir.mk
 -include Drivers/BSP/B-L475E-IOT01A1/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
+-include Application/Wifi/source/subdir.mk
+-include Application/GenericMQTT/Src/subdir.mk
+-include Application/Common/source/subdir.mk
 -include subdir.mk
 -include objects.mk
 

@@ -20,10 +20,14 @@ OBJCOPY_BIN :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Application/Common/source \
+Application/GenericMQTT/Src \
+Application/Wifi/source \
 Core/Src \
 Core/Startup \
 Drivers/BSP/B-L475E-IOT01A1 \
 Drivers/BSP/Components/lsm6dsl \
+Drivers/BSP/es_wifi \
 Drivers/CMSIS/DSP_Lib/Source/BasicMathFunctions \
 Drivers/CMSIS/DSP_Lib/Source/CommonTables \
 Drivers/CMSIS/DSP_Lib/Source/ComplexMathFunctions \
@@ -38,4 +42,8 @@ Drivers/STM32L4xx_HAL_Driver/Src \
 MEMS/App \
 MEMS/Target \
 Middlewares/STM32_MotionSP_Library/Src \
+Middlewares/Third_Party/MQTTClient-C \
+Middlewares/Third_Party/MQTTPacket \
+Middlewares/Third_Party/MbedTLS/source \
+Middlewares/Third_Party/cJSON \
 

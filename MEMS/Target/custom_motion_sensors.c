@@ -53,7 +53,7 @@ int32_t CUSTOM_MOTION_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 
   switch (Instance)
   {
-
+#if (USE_CUSTOM_MOTION_SENSOR_LSM6DSL_0 == 1)
     case CUSTOM_LSM6DSL_0:
       if (LSM6DSL_0_Probe(Functions) != BSP_ERROR_NONE)
       {
@@ -76,7 +76,7 @@ int32_t CUSTOM_MOTION_SENSOR_Init(uint32_t Instance, uint32_t Functions)
         component_functions |= MOTION_MAGNETO;
       }
       break;
-
+#endif
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;

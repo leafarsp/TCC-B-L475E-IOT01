@@ -22,8 +22,6 @@
 
 EXTI_HandleTypeDef hexti11 = {.Line = EXTI_LINE_11};
 extern volatile uint8_t MemsEventDetected;
-extern volatile uint8_t AccIntReceived;
-
 
 static void mems_int_pin_a_hardware_event_isr(void);
 
@@ -39,8 +37,6 @@ void set_mems_int_pin_a_exti(void)
 static void mems_int_pin_a_hardware_event_isr(void)
 {
   MemsEventDetected = 1;
-  AccIntReceived = 1;
-
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

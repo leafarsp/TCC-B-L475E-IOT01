@@ -34,7 +34,8 @@ extern "C" {
 #include "b_l475e_iot01a1.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "rng.h"
+#include "rtc.h"
 typedef struct
 {
   uint8_t hp_filter;
@@ -287,12 +288,101 @@ void Error_Handler(void);
 #define ISM43362_DRDY_EXTI1_Pin GPIO_PIN_1
 #define ISM43362_DRDY_EXTI1_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
+#include "stm32l475e_iot01.h"
+
+#include "version.h"
+#ifdef RFU
+#include "rfu.h"
+#endif
+#ifdef SENSOR
+#include "stm32l475e_iot01_accelero.h"
+#include "stm32l475e_iot01_psensor.h"
+#include "stm32l475e_iot01_gyro.h"
+#include "stm32l475e_iot01_hsensor.h"
+#include "stm32l475e_iot01_tsensor.h"
+#include "stm32l475e_iot01_magneto.h"
+#include "vl53l0x_proximity.h"
+#endif
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include "timedate.h"
+//#include "flash.h"
+#ifdef FIREWALL_MBEDLIB
+#include "firewall_wrapper.h"
+#include "firewall.h"
+#endif /* FIREWALL_MBEDLIB */
+#include "net.h"
+#include "iot_flash_config.h"
+#include "msg.h"
+#include "cloud.h"
+#include "sensors_data.h"
+
+
+#ifdef USE_MBED_TLS
+extern int mbedtls_hardware_poll( void *data, unsigned char *output, size_t len, size_t *olen );
+#endif /* USE_MBED_TLS */
+
+
 #define TMsg_MaxLen             4096
 typedef struct
 {
   uint32_t Len;
   uint8_t Data[TMsg_MaxLen];
 } TMsg;
+
+/* Exported constants --------------------------------------------------------*/
+#if defined(USE_WIFI)
+#define NET_IF  NET_IF_WLAN
+#elif defined(USE_LWIP)
+#define NET_IF  NET_IF_ETH
+#elif defined(USE_C2C)
+#define NET_IF  NET_IF_C2C
+#endif
+
+enum {BP_NOT_PUSHED=0, BP_SINGLE_PUSH, BP_MULTIPLE_PUSH};
+
+/* Exported functions --------------------------------------------------------*/
+void    Error_Handler(void);
+uint8_t Button_WaitForPush(uint32_t timeout);
+uint8_t Button_WaitForMultiPush(uint32_t timeout);
+void    Led_SetState(bool on);
+void    Led_Blink(int period, int duty, int count);
+void    Periph_Config(void);
+void SPI3_IRQHandler(void);
+extern  SPI_HandleTypeDef hspi;
+//extern RNG_HandleTypeDef hrng;
+//extern RTC_HandleTypeDef hrtc;
+extern net_hnd_t         hnet;
+
+extern const user_config_t *lUserConfigPtr;
+
+#ifdef __cplusplus
+}
+#endif
+#define MODEL_DEFAULT_MAC                 "0102030405"
+#define MODEL_MAC_SIZE                    13
+ typedef struct {
+   char      mac[MODEL_MAC_SIZE];      /*< To be read from the netif */
+   bool      LedOn;
+   uint32_t  TelemetryInterval;
+ } status_data_t;
+ typedef struct {
+   char      mac[MODEL_MAC_SIZE];      /*< To be read from the netif */
+   uint32_t  ts;           /*< Tick count since MCU boot. */
+ //#ifdef SENSOR -- Rafael 05/09/2021
+   int16_t   ACC_Value[3]; /*< Accelerometer */
+   float     GYR_Value[3]; /*< Gyroscope */
+   int16_t   MAG_Value[3]; /*< Magnetometer */
+   float     temperature;
+   float     humidity;
+   float     pressure;
+   int32_t   proximity;
+ //#endif /* SENSOR */
+ } pub_data_t;
+
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
