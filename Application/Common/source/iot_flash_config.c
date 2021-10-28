@@ -279,7 +279,7 @@ int updateWiFiCredentials(void)
   printf("\rEnter Security Mode (0 - Open, 1 - WEP, 2 - WPA, 3 - WPA2): \b");
   do
   {
-//      printf("\rEnter Security Mode (0 - Open, 1 - WEP, 2 - WPA, 3 - WPA2): \b");
+      printf("\rEnter Security Mode (0 - Open, 1 - WEP, 2 - WPA, 3 - WPA2): \b");
       c = getchar();
   }
   while ( (c < '0')  || (c > '3'));

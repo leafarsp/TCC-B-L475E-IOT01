@@ -31,6 +31,7 @@
 /* USER CODE BEGIN Includes */
 #include "MotionSP.h"
 #include "sensor_def.h"
+#include <stdio.h>
 //#include "stm32l4xx_hal_rng.h"
 //#include "stm32l4xx_hal_rtc.h"
 
@@ -79,7 +80,8 @@ void SPI_WIFI_ISR(void);
 /* USER CODE BEGIN 0 */
 //extern void BSP_COM_Init(COM_TypeDef COM, UART_HandleTypeDef *huart);
 extern void genericmqtt_client_XCube_sample_run(void);
-
+char * key_read_buffer = NULL;
+char debug_test_getchar=0;
 /* USER CODE END 0 */
 
 /**
@@ -142,8 +144,17 @@ int main(void)
 	  printf("Problema na inicialização da placa.\n");
   }
   genericmqtt_client_XCube_sample_run();
-//  while (1)
-//  {
+
+
+
+  while (1)
+  {
+
+	  //debug_test_getchar = getchar();
+	  //debug_test_getchar = teste();
+
+	  //HAL_UART_Receive(&huart1, (uint8_t *)&debug_test_getchar, 1, 30000);
+
 //
 //	//HAL_UART_Transmit(&huart1, "Hello", 5, 3000);
 //    /* USER CODE END WHILE */
@@ -223,9 +234,17 @@ int main(void)
 //              printf("%d", EOF);
 //              HAL_Delay(100);
 //     }
-//  }
+  }
   /* USER CODE END 3 */
 }
+
+ int teste(){
+	int debug_test_getchar=0;
+	HAL_UART_Receive(&huart1, (uint8_t *)&debug_test_getchar, 1, 30000);
+	return  debug_test_getchar;
+}
+
+
 
 /**
   * @brief System Clock Configuration

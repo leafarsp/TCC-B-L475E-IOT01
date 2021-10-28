@@ -523,7 +523,37 @@ int32_t BSP_COM_SelectLogPort(COM_TypeDef COM)
   (void)HAL_UART_Transmit(&hcom_uart[COM_ActiveLogPort], (uint8_t *)&ch, 1, COM_POLL_TIMEOUT);
   return ch;
 }
+
+ int __io_getchar(void)
+ {
+   /* Place your implementation of fgetc here */
+   /* e.g. read a character on USART and loop until the end of read */
+    uint8_t ch = 0;
+
+   while (HAL_OK != HAL_UART_Receive(&hcom_uart[COM_ActiveLogPort], (uint8_t *)&ch, 1, COM_POLL_TIMEOUT))
+   {
+     ;
+   }
+
+
+   return ch;
+ }
+
+ int _read (int file, char *ptr, int len)
+ {
+ 	/* The I/O library uses an internal buffer */
+ 	/* It asks for 1024 characters even if only getc() is used. */
+ 	/* If we use a for(;;) loop on the number of characters requested, */
+ 	/* the user is forced to enter the exact number requested, even if only one is needed. */
+ 	/* So here we return only 1 character even if requested length is > 1 */
+ 	*ptr = __io_getchar();
+
+ 	return 1;
+ }
 #endif /* USE_COM_LOG */
+
+
+
 /**
  * @brief  Initializes USART1 MSP.
  * @param  huart USART1 handle

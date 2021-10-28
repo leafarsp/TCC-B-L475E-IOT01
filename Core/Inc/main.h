@@ -34,6 +34,7 @@ extern "C" {
 #include "b_l475e_iot01a1.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 #include "rng.h"
 #include "rtc.h"
 typedef struct
