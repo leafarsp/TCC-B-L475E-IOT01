@@ -59,7 +59,7 @@
 extern I2C_HandleTypeDef hi2c2;
 extern TIM_HandleTypeDef htim6;
 /* USER CODE BEGIN EV */
-
+extern SPI_HandleTypeDef hspi;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -278,6 +278,9 @@ void TIM6_DAC_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-
+void SPI3_IRQHandler(void)
+{
+  HAL_SPI_IRQHandler(&hspi);
+}
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
