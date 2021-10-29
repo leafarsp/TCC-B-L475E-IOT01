@@ -7,6 +7,7 @@
 C_SRCS += \
 ../Core/Src/VibrationMonitoring.c \
 ../Core/Src/bsp.c \
+../Core/Src/custom_motion_sensors_ex_ex.c \
 ../Core/Src/dfsdm.c \
 ../Core/Src/gpio.c \
 ../Core/Src/main.c \
@@ -24,6 +25,7 @@ C_SRCS += \
 OBJS += \
 ./Core/Src/VibrationMonitoring.o \
 ./Core/Src/bsp.o \
+./Core/Src/custom_motion_sensors_ex_ex.o \
 ./Core/Src/dfsdm.o \
 ./Core/Src/gpio.o \
 ./Core/Src/main.o \
@@ -41,6 +43,7 @@ OBJS += \
 C_DEPS += \
 ./Core/Src/VibrationMonitoring.d \
 ./Core/Src/bsp.d \
+./Core/Src/custom_motion_sensors_ex_ex.d \
 ./Core/Src/dfsdm.d \
 ./Core/Src/gpio.d \
 ./Core/Src/main.d \

@@ -115,7 +115,7 @@ int main(void)
   MX_GPIO_Init();
   MX_DFSDM1_Init();
   MX_TIM6_Init();
-  MX_SPI1_Init();
+  //MX_SPI1_Init();
   MX_RNG_Init();
   MX_RTC_Init();
   MX_MEMS_Init();
@@ -157,10 +157,10 @@ int main(void)
 
 //
 //	//HAL_UART_Transmit(&huart1, "Hello", 5, 3000);
-//    /* USER CODE END WHILE */
-//
-//  MX_MEMS_Process();
-//    /* USER CODE BEGIN 3 */
+    /* USER CODE END WHILE */
+
+  MX_MEMS_Process();
+    /* USER CODE BEGIN 3 */
 //
 //
 //
@@ -237,14 +237,6 @@ int main(void)
   }
   /* USER CODE END 3 */
 }
-
- int teste(){
-	int debug_test_getchar=0;
-	HAL_UART_Receive(&huart1, (uint8_t *)&debug_test_getchar, 1, 30000);
-	return  debug_test_getchar;
-}
-
-
 
 /**
   * @brief System Clock Configuration
@@ -567,6 +559,33 @@ uint8_t Button_WaitForMultiPush(uint32_t delay)
   return BP_NOT_PUSHED;
 }
 
+/**
+  * @brief  EXTI line detection callback.
+  * @param  GPIO_Pin: Specifies the port pin connected to corresponding EXTI line.
+  * @retval None
+  */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  switch (GPIO_Pin)
+  {
+    case (GPIO_PIN_13):
+    {
+      Button_ISR();
+      break;
+    }
+
+	case (GPIO_PIN_1):
+	{
+		SPI_WIFI_ISR();
+		break;
+	}
+
+    default:
+    {
+      break;
+    }
+  }
+}
 
 /* USER CODE END 4 */
 

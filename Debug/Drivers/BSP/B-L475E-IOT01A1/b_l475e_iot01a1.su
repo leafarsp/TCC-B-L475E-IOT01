@@ -18,7 +18,7 @@ b_l475e_iot01a1.c:367:9:BSP_COM_DeInit	24	static
 b_l475e_iot01a1.c:404:26:MX_USART1_UART_Init	24	static
 b_l475e_iot01a1.c:508:9:BSP_COM_SelectLogPort	16	static
 b_l475e_iot01a1.c:520:6:__io_putchar	16	static
-b_l475e_iot01a1.c:527:6:__io_getchar	16	static
-b_l475e_iot01a1.c:542:6:_read	24	static
-b_l475e_iot01a1.c:563:13:USART1_MspInit	48	static
-b_l475e_iot01a1.c:596:13:USART1_MspDeInit	16	static
+b_l475e_iot01a1.c:533:13:USART1_MspInit	48	static
+b_l475e_iot01a1.c:564:5:_read	24	static
+b_l475e_iot01a1.c:575:5:__io_getchar	16	static
+b_l475e_iot01a1.c:589:13:USART1_MspDeInit	16	static

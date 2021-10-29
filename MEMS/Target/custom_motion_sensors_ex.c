@@ -1504,40 +1504,6 @@ int32_t CUSTOM_MOTION_SENSOR_FIFO_Set_INT1_FIFO_Full(uint32_t Instance, uint8_t 
 
   return ret;
 }
-/**
- * @brief  Set DRDY interrupt on INT1 pin (available only for ISM330DLC sensor)
- * @param  Instance the device instance
- * @param  Status DRDY interrupt on INT1 pin
- * @retval BSP status
- */
-int32_t CUSTOM_MOTION_SENSOR_Set_INT1_DRDY(uint32_t Instance, uint8_t Status)
-{
-  int32_t ret;
-
-  switch (Instance)
-  {
-
-    case CUSTOM_LSM6DSL_0:
-      if (LSM6DSL_ACC_Set_INT1_DRDY(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
-      {
-        ret = BSP_ERROR_COMPONENT_FAILURE;
-      }
-      else
-      {
-        ret = BSP_ERROR_NONE;
-      }
-      break;
-
-
-
-
-    default:
-      ret = BSP_ERROR_WRONG_PARAM;
-      break;
-  }
-
-  return ret;
-}
 
 /**
  * @brief  Set FIFO watermark level
@@ -1670,8 +1636,6 @@ int32_t CUSTOM_MOTION_SENSOR_FIFO_Get_Pattern(uint32_t Instance, uint16_t *Patte
 
   return ret;
 }
-
-
 
 /**
  * @brief  Get FIFO single axis data
@@ -1848,39 +1812,6 @@ int32_t CUSTOM_MOTION_SENSOR_Set_SelfTest(uint32_t Instance, uint32_t Function, 
       }
       break;
 #endif
-
-    default:
-      ret = BSP_ERROR_WRONG_PARAM;
-      break;
-  }
-
-  return ret;
-}
-
-/**
- * @brief  Set DRDY mode (available only for LSM6DSL, ISM330DLC sensor)
- * @param  Instance the device instance
- * @param  Status of DRDY mode
- * @retval BSP status
- */
-int32_t CUSTOM_MOTION_SENSOR_DRDY_Set_Mode(uint32_t Instance, uint8_t Status)
-{
-  int32_t ret;
-
-  switch (Instance)
-  {
-    case CUSTOM_LSM6DSL_0:
-      if (LSM6DSL_Set_DRDY_Mode(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
-      {
-        ret = BSP_ERROR_COMPONENT_FAILURE;
-      }
-      else
-      {
-        ret = BSP_ERROR_NONE;
-      }
-      break;
-
-
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;

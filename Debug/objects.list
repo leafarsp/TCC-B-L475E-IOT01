@@ -24,6 +24,7 @@
 "./Application/Wifi/source/wifi.o"
 "./Core/Src/VibrationMonitoring.o"
 "./Core/Src/bsp.o"
+"./Core/Src/custom_motion_sensors_ex_ex.o"
 "./Core/Src/dfsdm.o"
 "./Core/Src/gpio.o"
 "./Core/Src/main.o"
