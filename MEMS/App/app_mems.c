@@ -154,15 +154,15 @@ void MX_LSM6DSL_FIFOMode_Init(void)
   printf("%s", dataOut);
 }
 
-/**
-  * @brief  BSP Push Button callback
-  * @param  Button Specifies the pin connected EXTI line
-  * @retval None.
-  */
-void BSP_PB_Callback(Button_TypeDef Button)
-{
-  PushButtonDetected = 1;
-}
+///**
+//  * @brief  BSP Push Button callback
+//  * @param  Button Specifies the pin connected EXTI line
+//  * @retval None.
+//  */
+//void BSP_PB_Callback(Button_TypeDef Button)
+//{
+//  PushButtonDetected = 1;
+//}
 
 /**
   * @brief  Process of the LSM6DSL FIFO Mode application

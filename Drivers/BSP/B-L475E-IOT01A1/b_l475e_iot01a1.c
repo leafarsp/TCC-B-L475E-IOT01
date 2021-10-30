@@ -314,6 +314,12 @@ static void BUTTON_USER_EXTI_Callback(void)
   * @retval None
   */
 static void BUTTON_USER_GPIO_Init(void) {
+	/*Configure GPIO pins : PCPin PCPin */
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+	  GPIO_InitStruct.Pin = GPIO_PIN_13;
+	  	  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+	  	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  	  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 }
 
 #if (USE_BSP_COM_FEATURE > 0)

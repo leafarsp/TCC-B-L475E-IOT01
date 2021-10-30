@@ -1,7 +1,6 @@
 app_mems.c:88:6:MX_MEMS_Init	8	static
 app_mems.c:110:6:MX_MEMS_Process	8	static
 app_mems.c:128:6:MX_LSM6DSL_FIFOMode_Init	8	static
-app_mems.c:162:6:BSP_PB_Callback	16	static
 app_mems.c:171:6:MX_LSM6DSL_FIFOMode_Process	8	static
 app_mems.c:268:16:LSM6DSL_FIFO_Demo_Config	16	static
 app_mems.c:314:16:LSM6DSL_FIFO_Set_Bypass_Mode	16	static

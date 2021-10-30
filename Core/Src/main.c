@@ -118,11 +118,12 @@ int main(void)
   //MX_SPI1_Init();
   MX_RNG_Init();
   MX_RTC_Init();
-  MX_MEMS_Init();
+  //MX_MEMS_Init();
 
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
+
   /* UART console init */
    Console_UART_Init();
    Init_Sensors();
@@ -143,6 +144,7 @@ int main(void)
   {
 	  printf("Problema na inicialização da placa.\n");
   }
+  BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_EXTI);
   genericmqtt_client_XCube_sample_run();
 
 
@@ -159,7 +161,7 @@ int main(void)
 //	//HAL_UART_Transmit(&huart1, "Hello", 5, 3000);
     /* USER CODE END WHILE */
 
-  MX_MEMS_Process();
+  //MX_MEMS_Process();
     /* USER CODE BEGIN 3 */
 //
 //
@@ -586,7 +588,16 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
   }
 }
-
+/**
+  * @brief  BSP Push Button callback
+  * @param  Button Specifies the pin connected EXTI line
+  * @retval None.
+  */
+void BSP_PB_Callback(Button_TypeDef Button)
+{
+  //PushButtonDetected = 1;
+  Button_ISR();
+}
 
 
 /* USER CODE END 4 */
