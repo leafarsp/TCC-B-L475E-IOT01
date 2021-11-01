@@ -10,7 +10,7 @@
 *.class
 *.dll
 *.exe
-.o
+*.o
 *.so
 
 # Packages #
