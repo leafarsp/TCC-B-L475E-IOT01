@@ -87,7 +87,7 @@ int net_if_init(void * if_ctxt)
 
     skip_reconf = (Button_WaitForPush(5000) == BP_NOT_PUSHED);
   }
-  
+
   if (skip_reconf == false)
   {
     printf("Your WiFi parameters need to be entered to proceed.\n");

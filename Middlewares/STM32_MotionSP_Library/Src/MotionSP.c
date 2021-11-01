@@ -40,8 +40,12 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include <stdlib.h>
-#include "MotionSP.h"
+
+#include <math.h>
+#include <MotionSP.h>
+#include <string.h>
+#include <sys/_stdint.h>
+#include "main.h"
 
 /** @addtogroup MIDDLEWARES Middlewares
   * @{
@@ -86,6 +90,12 @@ sSubrange_t SRBinVal;                           //!< X-Y-Z Threshold Bin Frequen
 float fr_resolution;
 float amplitude_factor;
 
+float fftOutXnorm[FFT_SIZE_MAX];          //!< Array for output values for the complex magnitude function
+float fftOutYnorm[FFT_SIZE_MAX];          //!< Array for output values for the complex magnitude function
+float fftOutZnorm[FFT_SIZE_MAX];          //!< Array for output values for the complex magnitude function
+
+
+
 /**
   * @}
   */
@@ -97,7 +107,8 @@ float amplitude_factor;
 sAxesMagBuff_t AccAxesAvgMagBuff;               //!< Array for storing accelerometer magnitude average values
 SensorVal_f_t SpeedTimeDomain;           //!< Time Domain Speed Arrays to use during integration
 SensorVal_f_t SpeedTimeDomain_noDC;      //!< Time Domain Speed Arrays without DC Offset to use during integration
-
+void clean_high_freq_ampl();
+void store_highFreq();
 /**
   * @}
   */
@@ -443,33 +454,33 @@ static void MotionSP_TD_AccRmsEvalFromCircBuff(sTimeDomainData_t *pDst, sCircBuf
   */
 void MotionSP_accDelOffset(SensorVal_f_t *pDstArr, SensorVal_f_t *pSrcArr, float Smooth, uint16_t Restart)
 {
-  static SensorVal_f_t DstArrPre;
-  static SensorVal_f_t SrcArrPre;
+	static SensorVal_f_t DstArrPre;
+	  static SensorVal_f_t SrcArrPre;
 
-  if (Restart == 1)
-  {
-    pDstArr->AXIS_X = 0.0;
-    pDstArr->AXIS_Y = 0.0;
-    pDstArr->AXIS_Z = 0.0;
-    DstArrPre.AXIS_X = pSrcArr->AXIS_X;
-    DstArrPre.AXIS_Y = pSrcArr->AXIS_Y;
-    DstArrPre.AXIS_Z = pSrcArr->AXIS_Z;
-    SrcArrPre.AXIS_X = pSrcArr->AXIS_X;
-    SrcArrPre.AXIS_Y = pSrcArr->AXIS_Y;
-    SrcArrPre.AXIS_Z = pSrcArr->AXIS_Z;
-  }
-  else
-  {
-    pDstArr->AXIS_X = (Smooth * DstArrPre.AXIS_X) + Smooth * (pSrcArr->AXIS_X - SrcArrPre.AXIS_X);
-    pDstArr->AXIS_Y = (Smooth * DstArrPre.AXIS_Y) + Smooth * (pSrcArr->AXIS_Y - SrcArrPre.AXIS_Y);
-    pDstArr->AXIS_Z = (Smooth * DstArrPre.AXIS_Z) + Smooth * (pSrcArr->AXIS_Z - SrcArrPre.AXIS_Z);
-    DstArrPre.AXIS_X = pDstArr->AXIS_X;
-    DstArrPre.AXIS_Y = pDstArr->AXIS_Y;
-    DstArrPre.AXIS_Z = pDstArr->AXIS_Z;
-    SrcArrPre.AXIS_X = pSrcArr->AXIS_X;
-    SrcArrPre.AXIS_Y = pSrcArr->AXIS_Y;
-    SrcArrPre.AXIS_Z = pSrcArr->AXIS_Z;
-  }
+	  if (Restart == 1)
+	  {
+	    pDstArr->AXIS_X = 0.0;
+	    pDstArr->AXIS_Y = 0.0;
+	    pDstArr->AXIS_Z = 0.0;
+	    DstArrPre.AXIS_X = pSrcArr->AXIS_X;
+	    DstArrPre.AXIS_Y = pSrcArr->AXIS_Y;
+	    DstArrPre.AXIS_Z = pSrcArr->AXIS_Z;
+	    SrcArrPre.AXIS_X = pSrcArr->AXIS_X;
+	    SrcArrPre.AXIS_Y = pSrcArr->AXIS_Y;
+	    SrcArrPre.AXIS_Z = pSrcArr->AXIS_Z;
+	  }
+	  else
+	  {
+	    pDstArr->AXIS_X = (Smooth * DstArrPre.AXIS_X) + Smooth * (pSrcArr->AXIS_X - SrcArrPre.AXIS_X);
+	    pDstArr->AXIS_Y = (Smooth * DstArrPre.AXIS_Y) + Smooth * (pSrcArr->AXIS_Y - SrcArrPre.AXIS_Y);
+	    pDstArr->AXIS_Z = (Smooth * DstArrPre.AXIS_Z) + Smooth * (pSrcArr->AXIS_Z - SrcArrPre.AXIS_Z);
+	    DstArrPre.AXIS_X = pDstArr->AXIS_X;
+	    DstArrPre.AXIS_Y = pDstArr->AXIS_Y;
+	    DstArrPre.AXIS_Z = pDstArr->AXIS_Z;
+	    SrcArrPre.AXIS_X = pSrcArr->AXIS_X;
+	    SrcArrPre.AXIS_Y = pSrcArr->AXIS_Y;
+	    SrcArrPre.AXIS_Z = pSrcArr->AXIS_Z;
+	  }
 }
 
 /**
@@ -505,6 +516,7 @@ void MotionSP_CreateAccCircBuffer(sCircBuffer_t *pCircBuff, SensorVal_f_t buffTy
   * @param Restart Flag
   * @return none
   */
+extern float dc_smoot_adjust;
 void MotionSP_TimeDomainProcess(sAcceleroParam_t *pTimeDomain, Td_Type_t td_type, uint8_t Restart)
 {
   MotionSP_SwAccPkEval(&pTimeDomain->AccPeak, &AccCircBuffer);
@@ -514,7 +526,7 @@ void MotionSP_TimeDomainProcess(sAcceleroParam_t *pTimeDomain, Td_Type_t td_type
     /* TIME DOMAIN ANALYSIS: Speed RMS Moving AVERAGE */
     MotionSP_evalSpeedFromAccelero(&SpeedTimeDomain, &AccCircBuffer, Restart);
     // Delete the Speed DC components
-    MotionSP_speedDelOffset(&SpeedTimeDomain_noDC, &SpeedTimeDomain, DC_SMOOTH, Restart);
+    MotionSP_speedDelOffset(&SpeedTimeDomain_noDC, &SpeedTimeDomain, dc_smoot_adjust, Restart);
     // Evaluate SwExponential Filter by TAU_FILTER on Speed data
     MotionSP_SwSpeedRmsFilter(&sTimeDomain.SpeedRms, &SpeedTimeDomain_noDC, AcceleroODR.Tau, Restart);
   }
@@ -1008,18 +1020,101 @@ void MotionSP_FrequencyDomainProcess(void)
     AvgRdy.zAccAvgRdy = 0;
   }
 
-  printf("\n\nFFT:\n");
+//  printf("\n\nFFT:\n");
   fr_resolution = AcceleroODR.Frequency / ((float)(MotionSP_Parameters.FftSize));
-  amplitude_factor = (float) (MotionSP_Parameters.FftSize/8);
-    for(int i=0;i<MotionSP_Parameters.FftSize/2;i++)
-    {
-  	  printf("Fr,%f,x,%f,y,%f,z,%f\n",((float) i) * fr_resolution,
-  			  fftOutX[i] / amplitude_factor,
-			  fftOutY[i] / amplitude_factor,
-			  fftOutZ[i] / amplitude_factor);
-    }
-  printf("\n\n");
+  amplitude_factor = (float) (MotionSP_Parameters.FftSize)/4;
+//    for(int i=0;i<MotionSP_Parameters.FftSize/2;i++)
+//    {
+//  	  printf("Fr,%f,x,%f,y,%f,z,%f\n",((float) i) * fr_resolution,
+//  			  fftOutX[i] / amplitude_factor,
+//			  fftOutY[i] / amplitude_factor,
+//			  fftOutZ[i] / amplitude_factor);
+//    }
+//  printf("\n\n");
+
+
+	for(uint16_t i=0;i<((uint16_t) (FFT_SIZE_DEFAULT/2U));i++)
+	{
+
+		fftOutXnorm[i] = fftOutX[i] / amplitude_factor;
+		fftOutYnorm[i] = fftOutY[i] / amplitude_factor;
+		fftOutZnorm[i] = fftOutZ[i] / amplitude_factor;
+
+	}
+
+
 }
+
+void clean_high_freq_ampl()
+{
+
+
+	for(uint8_t i=0;i<NUM_MAX_FREQS;i++)
+	{
+		high_AmplX[i] = 0;
+		high_freqsX[i]= 0;
+
+		high_AmplY[i] = 0;
+		high_freqsY[i]= 0;
+
+		high_AmplZ[i] = 0;
+		high_freqsZ[i]= 0;
+	}
+}
+
+void store_highFreq(void)
+{
+  uint8_t jx=0;
+  uint8_t jy=0;
+  uint8_t jz=0;
+  uint16_t sample_high_pass = 0;
+  //clean_high_freq_ampl();
+
+  sample_high_pass = (uint16_t) (FREQ_HIGH_PASS / fr_resolution);
+	for(uint16_t i=sample_high_pass;i<((uint16_t) (FFT_SIZE_DEFAULT/2U));i+=2)
+	{
+		if (fftOutXnorm[i] > FFT_threshold)
+		{
+		  if (jx < NUM_MAX_FREQS)
+		  {
+			  high_AmplX[jx] = fftOutXnorm[i] ;
+		  	  high_freqsX[jx]=((float) i) * fr_resolution;
+		  	  jx++;
+		  }
+		}
+
+		if (fftOutYnorm[i] > FFT_threshold)
+		{
+			if (jy < NUM_MAX_FREQS)
+			{
+			  high_AmplY[jy] = fftOutYnorm[i] ;
+			  high_freqsY[jy]= ((float) i) * fr_resolution;
+			  jy++;
+			}
+		}
+
+		if (fftOutZnorm[i] > FFT_threshold)
+		{
+			if (jz < NUM_MAX_FREQS)
+			{
+			  high_AmplZ[jz] = fftOutZnorm[i] ;
+			  high_freqsZ[jz]= ((float) i) * fr_resolution;
+			  jz++;
+			}
+		}
+
+
+	}
+}
+
+
+
+
+//void get_fft(float *pFFTx, float *pFFTy, float *pFFTz){
+//	pFFTx = fftOutXnorm;
+//	pFFTy = fftOutYnorm;
+//	pFFTz = fftOutZnorm;
+//}
 
 /**
   * @brief  Frequency Domain Analysis

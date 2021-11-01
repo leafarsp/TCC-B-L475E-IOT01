@@ -8,11 +8,14 @@
 
 
 
+
 #define LSM6DSL_HP_DISABLE        0xFBU  /* Disable HP filter */
 #define LSM6DSL_HP_ENABLE_DIV400  0x34U  /* Enable HP filter, DIV/400 */
 #define LSM6DSL_DEFAULT_ODR       417.0f /* Default output/batch data rate */
 //#define LSM6DSL_DEFAULT_ODR       3333.0f /* Default output/batch data rate */
 #define LSM6DSL_DEFAULT_FS        2      /* Default full scale */
+
+
 
 #define TMsg_EOF                0xF0
 #define TMsg_BS                 0xF1
@@ -28,6 +31,7 @@ static uint8_t Enable_DRDY(void);
 static uint8_t Disable_DRDY(void);
 
 uint8_t Init_Demo(void);
+void colect_acc_data(void);
 static uint8_t Meas_Odr(void);
 static uint8_t Disable_FIFO(void);
 uint8_t Restart_FIFO(void);
@@ -42,7 +46,29 @@ void CHK_ComputeAndAdd(TMsg *Msg);
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-volatile uint8_t AccIntReceived = 0;
+extern volatile uint8_t MemsEventDetected;
+extern float fr_resolution;
+extern float amplitude_factor;
+extern float fftOutXnorm[FFT_SIZE_MAX];          //!< Array for output values for the complex magnitude function
+extern float fftOutYnorm[FFT_SIZE_MAX];          //!< Array for output values for the complex magnitude function
+extern float fftOutZnorm[FFT_SIZE_MAX];
+
+
+extern float high_freqsX[NUM_MAX_FREQS];
+extern float high_freqsY[NUM_MAX_FREQS];
+extern float high_freqsZ[NUM_MAX_FREQS];
+
+extern float high_AmplX[NUM_MAX_FREQS];
+extern float high_AmplY[NUM_MAX_FREQS];
+extern float high_AmplZ[NUM_MAX_FREQS];
+
+float speedRMSx = 0;
+float speedRMSy = 0;
+float speedRMSz = 0;
+float sampling_frequency;
+
+extern volatile pub_data_t pub_data;
+
 gui_settings_t GuiSettings = {.hp_filter = 0, .switch_HP_to_DC_null = 0};
 static volatile uint32_t IntCurrentTime1 = 0;
 static volatile uint32_t IntCurrentTime2 = 0;
@@ -60,6 +86,90 @@ extern sAxesMagBuff_t AccAxesAvgMagBuff;
 /**
  * @brief  Serial message structure definition
  */
+
+void colect_acc_data(void){
+
+
+
+		  //Init_Demo();
+	     if (Collect_Data())
+	     {
+	    	 speedRMSx = sTimeDomain.SpeedRms.AXIS_X/100.;
+	    	 speedRMSy = sTimeDomain.SpeedRms.AXIS_Y/100.;
+	    	 speedRMSz = sTimeDomain.SpeedRms.AXIS_Z/100.;
+	    	 sampling_frequency = AcceleroODR.Frequency / ((float)(MotionSP_Parameters.FftSize));
+
+	    	 store_highFreq();
+
+	    	 /* Perform Frequency Domain analysis if buffer is full */
+//	    	 pub_data.speedRMS[0] = speedRMSx;//sTimeDomain.SpeedRms.AXIS_X/100;
+//	    	 pub_data.speedRMS[1] = speedRMSy;//sTimeDomain.SpeedRms.AXIS_Y/100;
+//	    	 pub_data.speedRMS[2] = speedRMSz;//sTimeDomain.SpeedRms.AXIS_Z/100;
+
+	        if (fftIsEnabled == 1)
+	        {
+	          fftIsEnabled = 0;
+
+	          if ((HAL_GetTick() - StartTick) >= MotionSP_Parameters.tacq)
+	          {
+	            FinishAvgFlag = 1;
+	            StartTick = HAL_GetTick();
+	          }
+
+	         MotionSP_FrequencyDomainProcess();
+	        }
+	        /* Send data to GUI if total acquisition time is reached */
+		  if (FinishAvgFlag == 1)
+		  {
+			FinishAvgFlag = 0;
+
+			printf("\n\nSOF\n");
+			 printf("Dados de aquisicao,Fr,%f,Pr,%f,Tau,%f,Amostras,%d,FFT_fr_res,%f\n",
+					 AcceleroODR.Frequency, AcceleroODR.Period, AcceleroODR.Tau, AccCircBuffer.Size,
+					 sampling_frequency);
+			 printf("RMS-ACC,ACC_rms_x,%f,ACC_rms_y,%f,ACC_rms_z,%f\n",sTimeDomain.AccRms.AXIS_X,
+																	 sTimeDomain.AccRms.AXIS_Y,
+																	 sTimeDomain.AccRms.AXIS_Z);
+			 printf("RMS-Speed,Speed_rms_x,%f,Speed_rms_y,%f,Speed_rms_z,%f\n",speedRMSx,
+																			   speedRMSy,
+																			   speedRMSz);
+			 printf("Pico-ACC,Pico_acc_x,%f,Pico_acc_y,%f,Pico_acc_z,%f\n",sTimeDomain.AccPeak.AXIS_X,
+																					 sTimeDomain.AccPeak.AXIS_Y,
+																					 sTimeDomain.AccPeak.AXIS_Z);
+
+			printf("\n\nFFT:\n");
+			for(int i=0;i<((int)(FFT_SIZE_DEFAULT / 2));i++)
+			{
+			  printf("Fr,%f,x,%f,y,%f,z,%f\n",((float) i) * fr_resolution,
+					  fftOutXnorm[i],
+					  fftOutYnorm[i],
+					  fftOutZnorm[i]
+								  );
+			}
+			printf("\n\n");
+
+
+
+			printf("\n\n\n ACC:\n");
+			for (int i=0;i<FFT_SIZE_DEFAULT;i++){
+				printf("t_a,%d,x,%f,y,%f,z,%f\n",i, AccCircBuffer.Data.AXIS_X[i], AccCircBuffer.Data.AXIS_Y[i], AccCircBuffer.Data.AXIS_Z[i]);
+
+			   }
+
+			printf("\n\n\n Speed:\n");
+			for (int i=0;i<FFT_SIZE_DEFAULT;i++){
+				printf("t_s,%d,x,%f,y,%f,z,%f\n",i, SpeedCircBuffer.Data.AXIS_X[i], SpeedCircBuffer.Data.AXIS_Y[i], SpeedCircBuffer.Data.AXIS_Z[i]);
+
+			   }
+			//RestartFlag = 1;
+		  }
+
+		  printf("EOF\n");
+		  printf("%d", EOF);
+		  HAL_Delay(100);
+	     }
+
+}
 
 
 uint8_t Init_Demo(void)
@@ -223,9 +333,9 @@ static uint8_t Meas_Odr(void)
       return 0;
     }
 
-    if (AccIntReceived)
+    if (MemsEventDetected)
     {
-      AccIntReceived = 0;
+      MemsEventDetected = 0;
 
       /* Get start time */
       if (odr_meas_iter == 0)
@@ -305,7 +415,7 @@ static uint8_t Meas_Odr(void)
   */
 uint8_t Restart_FIFO(void)
 {
-  AccIntReceived = 0;
+  MemsEventDetected = 0;
 
   /* FIFO Bypass Mode */
   if (CUSTOM_MOTION_SENSOR_FIFO_Set_Mode(CUSTOM_LSM6DSL_0, LSM6DSL_BYPASS_MODE) != BSP_ERROR_NONE)
@@ -327,6 +437,7 @@ uint8_t Restart_FIFO(void)
   * @retval 1 in case of success
   * @retval 0 otherwise
   */
+float dc_smoot_adjust = DC_SMOOTH;
 uint8_t Collect_Data(void)
 {
   uint16_t pattern;
@@ -337,13 +448,14 @@ uint8_t Collect_Data(void)
   SensorVal_f_t single_data_no_dc;
   uint8_t exit_cond = 0;
   //printf("FinishAvgFlag = %d, fftIsEnabled = %d, AccIntReceived = %d\n",FinishAvgFlag, fftIsEnabled, AccIntReceived);
-  if (FinishAvgFlag == 0 && fftIsEnabled == 0 && AccIntReceived == 1)
+  if (FinishAvgFlag == 0 && fftIsEnabled == 0 && MemsEventDetected == 1)
   {
-    AccIntReceived = 0;
+    MemsEventDetected = 0;
 
     CUSTOM_MOTION_SENSOR_FIFO_Get_Num_Samples(CUSTOM_LSM6DSL_0, &samples_in_fifo);
 
-    if ((samples_in_fifo / 3U) < MotionSP_Parameters.FftSize)
+    //if ((samples_in_fifo / 3U) < MotionSP_Parameters.FftSize)
+    if ((samples_in_fifo / 3U) < FFT_SIZE_DEFAULT)
     {
       Restart_FIFO();
       return 0;
@@ -374,10 +486,11 @@ uint8_t Collect_Data(void)
           single_data.AXIS_Z = (float)acceleration;
 
           /* Remove DC offset */
-          MotionSP_accDelOffset(&single_data_no_dc, &single_data, DC_SMOOTH, RestartFlag);
+          MotionSP_accDelOffset(&single_data_no_dc, &single_data, dc_smoot_adjust, RestartFlag);
 
           /* Fill the accelero circular buffer */
           MotionSP_CreateAccCircBuffer(&AccCircBuffer, single_data_no_dc);
+
 
           /* TIME DOMAIN ANALYSIS: Speed RMS Moving AVERAGE */
          //MotionSP_evalSpeedFromAccelero(&SpeedTimeDomain, &AccCircBuffer, RestartFlag);
@@ -509,7 +622,7 @@ static uint8_t Enable_DRDY(void)
 {
   CUSTOM_MOTION_SENSOR_AxesRaw_t axes;
 
-  AccIntReceived = 0;
+  MemsEventDetected = 0;
 
   /* Enable DRDY */
 

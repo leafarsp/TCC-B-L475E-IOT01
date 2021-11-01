@@ -232,16 +232,16 @@ int FLASH_update(uint32_t dst_addr, const void *data, uint32_t size)
   int remaining = size;
   uint8_t * src_addr = (uint8_t *) data;
   uint64_t page_cache[FLASH_PAGE_SIZE/sizeof(uint64_t)];
- 
+
   __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
 
   do {
     uint32_t fl_addr = ROUND_DOWN(dst_addr, FLASH_PAGE_SIZE);
     int fl_offset = dst_addr - fl_addr;
     int len = MIN(FLASH_PAGE_SIZE - fl_offset, size);
-    
+
     /* Load from the flash into the cache */
-    memcpy(page_cache, (void *) fl_addr, FLASH_PAGE_SIZE);  
+    memcpy(page_cache, (void *) fl_addr, FLASH_PAGE_SIZE);
     /* Update the cache from the source */
     memcpy((uint8_t *)page_cache + fl_offset, src_addr, len);
     /* Erase the page, and write the cache */
@@ -269,7 +269,7 @@ int FLASH_update(uint32_t dst_addr, const void *data, uint32_t size)
       }
     }
   } while ((ret == 0) && (remaining > 0));
-  
+
   return ret;
 }
 

@@ -41,7 +41,7 @@
 /* USER CODE BEGIN PTD */
 static UART_HandleTypeDef console_uart;
 static volatile uint8_t button_flags = 0;
-pub_data_t pub_data       = { MODEL_DEFAULT_MAC, 0 };
+volatile pub_data_t pub_data       = { MODEL_DEFAULT_MAC, 0 };
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -98,7 +98,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+	HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -132,7 +132,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-//  HAL_TIM_Base_Start_IT(&htim6);
+  HAL_TIM_Base_Start_IT(&htim6);
   printf("Hello\n");
   printf("Inicializando a placa\n");
   if ( Init_Demo() !=0)
@@ -145,97 +145,22 @@ int main(void)
 	  printf("Problema na inicialização da placa.\n");
   }
   BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_EXTI);
-  genericmqtt_client_XCube_sample_run();
+
+  //colect_acc_data();
+
 
 
 
   while (1)
   {
 
-	  //debug_test_getchar = getchar();
-	  //debug_test_getchar = teste();
-
-	  //HAL_UART_Receive(&huart1, (uint8_t *)&debug_test_getchar, 1, 30000);
-
-//
-//	//HAL_UART_Transmit(&huart1, "Hello", 5, 3000);
     /* USER CODE END WHILE */
 
   //MX_MEMS_Process();
     /* USER CODE BEGIN 3 */
-//
-//
-//
-//	  //Init_Demo();
-//     if (Collect_Data())
-//     {
-//    	 printf("\n\nSOF\n", EOF);
-//    	 printf("Dados de aquisicao,Fr,%f,Pr,%f,Tau,%f,Amostras,%d,FFT_fr_res,%f\n",
-//    			 AcceleroODR.Frequency, AcceleroODR.Period, AcceleroODR.Tau, AccCircBuffer.Size,
-//				 AcceleroODR.Frequency / ((float)(MotionSP_Parameters.FftSize)));
-//    	 printf("RMS-ACC,ACC_rms_x,%f,ACC_rms_y,%f,ACC_rms_z,%f\n",sTimeDomain.AccRms.AXIS_X,
-//    			 	 	 	 	 	 	 	 	 	 	 	     sTimeDomain.AccRms.AXIS_Y,
-//																 sTimeDomain.AccRms.AXIS_Z);
-//    	 printf("RMS-Speed,Speed_rms_x,%f,Speed_rms_y,%f,Speed_rms_z,%f\n",sTimeDomain.SpeedRms.AXIS_X/100,
-//    	     			 	 	 	 	 	 	 	 	 	 	 	     sTimeDomain.SpeedRms.AXIS_Y/100,
-//    	 																 sTimeDomain.SpeedRms.AXIS_Z/100);
-//    	 printf("Pico-ACC,Pico_acc_x,%f,Pico_acc_y,%f,Pico_acc_z,%f\n",sTimeDomain.AccPeak.AXIS_X,
-//    			 	 	 	 	 	 	 	 	 	 	 	 	 	 sTimeDomain.AccPeak.AXIS_Y,
-//    	 														     sTimeDomain.AccPeak.AXIS_Z);
-//    	 /* Perform Frequency Domain analysis if buffer is full */
-//
-//        if (fftIsEnabled == 1)
-//        {
-//          fftIsEnabled = 0;
-//
-//          if ((HAL_GetTick() - StartTick) >= MotionSP_Parameters.tacq)
-//          {
-//            FinishAvgFlag = 1;
-//            StartTick = HAL_GetTick();
-//          }
-//
-//          MotionSP_FrequencyDomainProcess();
-//        }
-//        /* Send data to GUI if total acquisition time is reached */
-//              if (FinishAvgFlag == 1)
-//              {
-//                FinishAvgFlag = 0;
-//
-//                /* Send all 3 axes data to Unicleo-GUI */
-////                for (axis_active = X_AXIS; axis_active < NUM_AXES; axis_active++)
-////                {
-////                  INIT_STREAMING_HEADER(&msg_dat);
-////                  Get_Msg(&msg_dat, axis_active);
-//////                  if (axis_active == X_AXIS)
-//////                  {
-//////                	  printf("\n\n\n\n\n\n\n\nEixoX:\n");
-//////                  } else if (axis_active == Y_AXIS)
-//////                  {
-//////                	  printf("EixoY:\n");
-//////                  } else if (axis_active == Z_AXIS)
-//////                  {
-//////                	  printf("EixoZ:\n");
-//////                  }
-//////                  UART_SendMsg(&msg_dat);
-////                }
-//                printf("\n\n\n ACC:\n");
-//                for (int i=0;i<AccCircBuffer.Size;i++){
-//                	printf("t_a,%d,x,%f,y,%f,z,%f\n",i, AccCircBuffer.Data.AXIS_X[i], AccCircBuffer.Data.AXIS_Y[i], AccCircBuffer.Data.AXIS_Z[i]);
-//
-//                   }
-//
-//                printf("\n\n\n Speed:\n");
-//				for (int i=0;i<AccCircBuffer.Size;i++){
-//					printf("t_s,%d,x,%f,y,%f,z,%f\n",i, SpeedCircBuffer.Data.AXIS_X[i], SpeedCircBuffer.Data.AXIS_Y[i], SpeedCircBuffer.Data.AXIS_Z[i]);
-//
-//				   }
-//                RestartFlag = 1;
-//              }
-//
-//              printf("EOF\n", EOF);
-//              printf("%d", EOF);
-//              HAL_Delay(100);
-//     }
+	  genericmqtt_client_XCube_sample_run();
+	  //colect_acc_data();
+
   }
   /* USER CODE END 3 */
 }
@@ -378,8 +303,10 @@ int i;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* Prevent unused argument(s) compilation warning */
-  i++;
-
+	if (htim->Instance == TIM6)
+	{
+		//colect_acc_data();
+	}
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_PeriodElapsedCallback could be implemented in the user file
    */

@@ -48,12 +48,19 @@ MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 96K
   RAM2    (xrw)    : ORIGIN = 0x10000000,   LENGTH = 32K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 1024K
+  FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 600K		/* Use only the first bank */
+  FLASH_UC (r)    : ORIGIN = 0x0806630C, LENGTH = 12K		/* Fixed-location area */
+
 }
 
 /* Sections */
 SECTIONS
 {
+/* Uninited regions must be placed after inited regions, otherwise they are erased at while programming. */
+  UNINIT_FIXED_LOC (NOLOAD) : ALIGN(0x800)
+  {
+    *(UNINIT_FIXED_LOC)
+  } >FLASH_UC
   /* The startup code into "RAM" Ram type memory */
   .isr_vector :
   {

@@ -62,7 +62,9 @@
  * However, the application needs to reinit whenever the connectivity seems to be broken. */
 extern int net_if_reinit(void * if_ctxt);
 
-
+extern float speedRMSx;
+extern float speedRMSy;
+extern float speedRMSz;
 /* Private define ------------------------------------------------------------*/
 //#define MODEL_MAC_SIZE                    13
 //#define MODEL_DEFAULT_MAC                 "0102030405" Rafael 05/09/2021 - migrado para o main.h
@@ -129,6 +131,14 @@ static bool g_statusChanged;
 static bool g_reboot;
 static int g_connection_needed_score;
 
+extern float high_freqsX[NUM_MAX_FREQS];
+extern float high_freqsY[NUM_MAX_FREQS];
+extern float high_freqsZ[NUM_MAX_FREQS];
+
+extern float high_AmplX[NUM_MAX_FREQS];
+extern float high_AmplY[NUM_MAX_FREQS];
+extern float high_AmplZ[NUM_MAX_FREQS];
+
 //pub_data_t pub_data       = { MODEL_DEFAULT_MAC, 0 };
 status_data_t status_data = { MODEL_DEFAULT_MAC, MODEL_DEFAULT_LEDON, MODEL_DEFAULT_TELEMETRYINTERVAL };
 
@@ -149,6 +159,11 @@ void allpurposeMessageHandler(MessageData* data);
 int parse_and_fill_device_config(device_config_t ** pConfig, const char *string);
 void free_device_config(device_config_t * config);
 int string_allocate_from_token(char ** pDestString, char * tokenName, const char * sourceString);
+void publ_payload3(MQTTClient client, device_config_t * device_config);
+void publ_payload1(MQTTClient client, device_config_t * device_config);
+void publ_payload2(MQTTClient client, device_config_t * device_config);
+void publ_payload4(MQTTClient client, device_config_t * device_config);
+void publ_payload5(MQTTClient client, device_config_t * device_config);
 
 /* Exported functions --------------------------------------------------------*/
 
@@ -551,18 +566,24 @@ void genericmqtt_client_XCube_sample_run(void)
             msg_error("Error formatting device information topic.\n");
           }
 #endif /* LITMUS_LOOP */
-
+          //colect_acc_data();
           /* Send the telemetry data, and send the device status if it was changed by a received message. */
           uint32_t last_telemetry_time_ms = HAL_GetTick();
           do
           {
-            uint8_t command = Button_WaitForMultiPush(500);
-            bool b_sample_data = (command == BP_SINGLE_PUSH); /* If short button push, publish once. */
-            if (command == BP_MULTIPLE_PUSH)                  /* If long button push, toggle the telemetry publication. */
-            {
+
+
+
+
+        	colect_acc_data();
+        	HAL_Delay(5000);
+            //uint8_t command = Button_WaitForMultiPush(500);
+            bool b_sample_data = 1;//(command == BP_SINGLE_PUSH); /* If short button push, publish once. */
+//            if (command == BP_MULTIPLE_PUSH)                  /* If long button push, toggle the telemetry publication. */
+//            {
               g_publishData = !g_publishData;
               msg_info("%s the sensor values publication loop.\n", (g_publishData == true) ? "Enter" : "Exit");
-            }
+//            }
 
             int32_t left_ms = comp_left_ms(last_telemetry_time_ms, HAL_GetTick(), status_data.TelemetryInterval * 1000);
 
@@ -571,177 +592,40 @@ void genericmqtt_client_XCube_sample_run(void)
             {
               last_telemetry_time_ms = HAL_GetTick();
 
-#ifdef SENSOR
-              /* Read the Data from the sensors */
-              pub_data.temperature = BSP_TSENSOR_ReadTemp();
-              pub_data.humidity = BSP_HSENSOR_ReadHumidity();
-              pub_data.pressure = BSP_PSENSOR_ReadPressure();
-              pub_data.proximity = VL53L0X_PROXIMITY_GetDistance();
-              BSP_ACCELERO_AccGetXYZ(pub_data.ACC_Value);
-              BSP_GYRO_GetXYZ(pub_data.GYR_Value);
-              BSP_MAGNETO_GetXYZ(pub_data.MAG_Value);
-#endif /* SENSOR */
               pub_data.ts = time(NULL); /* last_telemetry_time_ms; */
 
               /* Create and send the message. */
               /* Note: The state.reported object hierarchy is used to help the inter-operability with 1st tier cloud providers. */
-#ifdef LITMUS_LOOP
-              ret = snprintf(mqtt_pubtopic, sizeof(mqtt_pubtopic), "loop/data/%s/json",device_config->LoopTopicId);
-              if (ret >= 0 && ret < sizeof(mqtt_pubtopic))
-              {
-                ret = snprintf( mqtt_msg, sizeof(mqtt_msg), "{ \"timestamp\":0, \"values\": [ \n"
-#ifdef SENSOR
-                                  "{\"objectId\":3303,\"instanceId\":0,\"resourceId\":5700,\"datatype\":\"Float\",\"value\":%.2f}, \n"
-                                  "{\"objectId\":3304,\"instanceId\":0,\"resourceId\":5700,\"datatype\":\"Float\",\"value\":%.2f}, \n"
-                                  "{\"objectId\":3323,\"instanceId\":0,\"resourceId\":5700,\"datatype\":\"Float\",\"value\":%.2f}, \n"
-                                  "{\"objectId\":3330,\"instanceId\":0,\"resourceId\":5700,\"datatype\":\"Integer\",\"value\":%ld}, \n"
-                                  "{\"objectId\":3313,\"instanceId\":0,\"resourceId\":5702,\"datatype\":\"Integer\",\"value\":%d}, \n"
-                                  "{\"objectId\":3313,\"instanceId\":0,\"resourceId\":5703,\"datatype\":\"Integer\",\"value\":%d}, \n"
-                                  "{\"objectId\":3313,\"instanceId\":0,\"resourceId\":5704,\"datatype\":\"Integer\",\"value\":%d}, \n"
-                                  "{\"objectId\":3334,\"instanceId\":0,\"resourceId\":5702,\"datatype\":\"Integer\",\"value\":%.0f}, \n"
-                                  "{\"objectId\":3334,\"instanceId\":0,\"resourceId\":5703,\"datatype\":\"Integer\",\"value\":%.0f}, \n"
-                                  "{\"objectId\":3334,\"instanceId\":0,\"resourceId\":5704,\"datatype\":\"Integer\",\"value\":%.0f}, \n"
-                                  "{\"objectId\":3314,\"instanceId\":0,\"resourceId\":5702,\"datatype\":\"Integer\",\"value\":%d}, \n"
-                                  "{\"objectId\":3314,\"instanceId\":0,\"resourceId\":5703,\"datatype\":\"Integer\",\"value\":%d}, \n"
-                                  "{\"objectId\":3314,\"instanceId\":0,\"resourceId\":5704,\"datatype\":\"Integer\",\"value\":%d}, \n"
-#endif /* SENSOR */
-                                  "{\"objectId\":3333,\"instanceId\":0,\"resourceId\":5506,\"datatype\":\"Integer\",\"value\":%lu} \n"
-                                  "] }",
-#ifdef SENSOR
-                                  pub_data.temperature, pub_data.humidity, pub_data.pressure, pub_data.proximity,
-                                  pub_data.ACC_Value[0], pub_data.ACC_Value[1], pub_data.ACC_Value[2],
-                                  pub_data.GYR_Value[0], pub_data.GYR_Value[1], pub_data.GYR_Value[2],
-                                  pub_data.MAG_Value[0], pub_data.MAG_Value[1], pub_data.MAG_Value[2],
-#endif /* SENSOR */
-                                  pub_data.ts
-                                  );
-
-              }
-              else
-              {
-                msg_error("Error formatting device data topic.\n");
-              }
-#elif defined(UBIDOTS_MQTT)
-              snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/v1.6/devices/%s", device_config->MQClientId);
-              ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n"
-#ifdef SENSOR
-                   "   \"temperature\": %.2f,\n   \"humidity\": %.2f,\n   \"pressure\": %.2f,\n   \"proximity\": %ld,\n"
-                   "   \"acc_x\": %d, \"acc_y\": %d, \"acc_z\": %d,\n"
-                   "   \"gyr_x\": %.0f, \"gyr_y\": %.0f, \"gyr_z\": %.0f,\n"
-                   "   \"mag_x\": %d, \"mag_y\": %d, \"mag_z\": %d,\n"
-#endif /* SENSOR */
-                   "   \"ts\":  %lu\n"
-                   "}"
-#ifdef SENSOR
-                 ,pub_data.temperature, pub_data.humidity, pub_data.pressure, pub_data.proximity
-                 ,pub_data.ACC_Value[0], pub_data.ACC_Value[1], pub_data.ACC_Value[2]
-                 ,pub_data.GYR_Value[0], pub_data.GYR_Value[1], pub_data.GYR_Value[2]
-                 ,pub_data.MAG_Value[0], pub_data.MAG_Value[1], pub_data.MAG_Value[2]
-#endif  /* SENSOR */
-                 ,pub_data.ts
-                 );
-
-#else /* ! LITMUS_LOOP */
-              //snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/sensors/%s", device_config->MQClientId);
-              snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/losant/%s/state", device_config->MQClientId);
-              //snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/teste/demo/%s", device_config->MQClientId);
-              //snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/losant/%s/state", device_config->MQClientId);
-              //ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n \"state\": {\n  \"reported\": {\n"
-              ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n \"data\": {\n"
-
-//#ifdef SENSOR
-                 "   \"temperature\": %.2f,\n   \"humidity\": %.2f,\n   \"pressure\": %.2f,\n   \"proximity\": %ld,\n"
-                 "   \"acc_x\": %d, \"acc_y\": %d, \"acc_z\": %d,\n"
-                 "   \"gyr_x\": %.0f, \"gyr_y\": %.0f, \"gyr_z\": %.0f,\n"
-                 "   \"mag_x\": %d, \"mag_y\": %d, \"mag_z\": %d,\n"
-//#endif /* SENSOR */
-                 "   \"ts\": %lu, \"mac\": \"%s\"\n"
-                 "  }\n }",
+              publ_payload1(client, device_config);
 
 
-//#ifdef SENSOR
-                 pub_data.temperature, pub_data.humidity, pub_data.pressure, pub_data.proximity,
-                 pub_data.ACC_Value[0], pub_data.ACC_Value[1], pub_data.ACC_Value[2],
-                 pub_data.GYR_Value[0], pub_data.GYR_Value[1], pub_data.GYR_Value[2],
-                 pub_data.MAG_Value[0], pub_data.MAG_Value[1], pub_data.MAG_Value[2],
-//#endif /* SENSOR */
-                 pub_data.ts, pub_data.mac);
 
-#endif /* LITMUS_LOOP */
+          	for (uint8_t k=0;k< NUM_MAX_FREQS;k++)
+          	{
+          		pub_data.ampl_peak_x[k] = high_AmplX[k];
+          		pub_data.ampl_peak_y[k] = high_AmplY[k];
+          		pub_data.ampl_peak_z[k] = high_AmplZ[k];
 
-              if ( (ret < 0) || (ret >= MQTT_MSG_BUFFER_SIZE) )
-              {
-                msg_error("Telemetry message formatting error.\n");
-              }
-              else
-              {
-                ret = stiot_publish(&client, mqtt_pubtopic, mqtt_msg);  /* Wrapper for MQTTPublish() */
-                if (ret == MQSUCCESS)
-                {
-                  /* Visual notification of the telemetry publication: LED blink. */
-                  Led_Blink(80, 40, 5);
-                  /* Restore the LED state */
-                  Led_SetState(status_data.LedOn);
-                  msg_info("#\n");
-                  msg_info("publication topic: %s \tpayload: %s\n", mqtt_pubtopic, mqtt_msg);
-                }
-                else
-                {
-                  msg_error("Telemetry publication failed.\n");
-                  g_connection_needed_score++;
-                }
+          		pub_data.freq_peak_x[k] = high_freqsX[k];
+          		pub_data.freq_peak_y[k] = high_freqsY[k];
+          		pub_data.freq_peak_z[k] = high_freqsZ[k];
 
-                ret = MQTTYield(&client, 500);
-                if (ret != MQSUCCESS)
-                {
-                  msg_error("Yield failed. Reconnection needed?.\n");
-                  /* g_connection_needed_score++; */
-                }
-              }
+          	}
+
+              publ_payload2(client, device_config);
+              publ_payload4(client, device_config);
+              publ_payload5(client, device_config);
+
             }
 
-#ifndef UBIDOTS_MQTT
+
             /* Publish the updated device status */
             if (g_statusChanged)
             {
-#ifdef LITMUS_LOOP
-              snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "loop/resp/%s/json", device_config->LoopTopicId);
-#else
               //snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/devices/%s/status", device_config->MQClientId);
-              snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/losant/%s/state", device_config->MQClientId);
-#endif
-              //ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n \"state\": {\n  \"reported\": {\n"
-              ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n \"data\": {\n"
-                 "   \"LedOn\": %s,\n"
-                 "   \"TelemetryInterval\": %d,\n"
-                 "   \"ts\": %ld, \"mac\": \"%s\"\n"
-                 "  }\n}",
-                 (status_data.LedOn == true) ? "true" : "false",
-                 (int) status_data.TelemetryInterval,
-                 time(NULL), pub_data.mac);
-
-              if ( (ret < 0) || (ret >= MQTT_MSG_BUFFER_SIZE) )
-              {
-                msg_error("Telemetry message formatting error.\n");
-              }
-              else
-              {
-                ret = stiot_publish(&client, mqtt_pubtopic, mqtt_msg);  /* Wrapper for MQTTPublish() */
-                if (ret != MQSUCCESS)
-                {
-                  msg_error("Status publication failed.\n");
-                  g_connection_needed_score++;
-                }
-                else
-                {
-                  msg_info("publication topic: %s \tpayload: %s\n",mqtt_pubtopic, mqtt_msg);
-                  g_statusChanged = false;
-                }
-              }
+            	publ_payload3(client, device_config);
             }
-#else /* ! UBIDOTS_MQTT */
-            (void) g_statusChanged;
-#endif /* ! UBIDOTS_MQTT */
+
 
             ret = MQTTYield(&client, 500);
             if (ret != MQSUCCESS)
@@ -753,6 +637,7 @@ void genericmqtt_client_XCube_sample_run(void)
             {
               msg_info(".");
             }
+
           } while ( g_continueRunning && !g_reboot && (g_connection_needed_score == 0) );
 
         }
@@ -792,7 +677,359 @@ void genericmqtt_client_XCube_sample_run(void)
   }
 }
 
+void publ_payload1(MQTTClient client, device_config_t * device_config)
+{
+	uint32_t last_telemetry_time_ms;
+	int ret = 0;
 
+	pub_data.speedRMS[0] = speedRMSx;//sTimeDomain.SpeedRms.AXIS_X/100;
+	pub_data.speedRMS[1] = speedRMSy;//sTimeDomain.SpeedRms.AXIS_Y/100;
+	pub_data.speedRMS[2] = speedRMSz;//sTimeDomain.SpeedRms.AXIS_Z/100;
+
+	if ((speedRMSx <= 2.) ||
+	  (speedRMSy <= 2.) ||
+	  (speedRMSz <= 2.)
+	  )
+	{
+	  strcpy(pub_data.motor_state, "Vibracao normal");
+	} else if (((speedRMSx > 2.) && (speedRMSx <= 5.))||
+			 ((speedRMSy > 2.) && (speedRMSy <= 5.))||
+			 ((speedRMSz > 2.) && (speedRMSz <= 5.))
+		  )
+	{
+	  strcpy(pub_data.motor_state, "Vibracao moderada");
+	} else if (((speedRMSx > 5.) )||
+		 ((speedRMSy > 5.) )||
+		 ((speedRMSz > 5.) )
+	  )
+	{
+	  strcpy(pub_data.motor_state, "Vibracao critica");
+	}
+
+	last_telemetry_time_ms = HAL_GetTick();
+	snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/losant/%s/state", device_config->MQClientId);
+
+	ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n \"data\": {\n"
+	 "   \"temperature\": %.2f,\n   \"humidity\": %.2f,\n   \"pressure\": %.2f,\n   \"proximity\": %ld,\n"
+	 "   \"acc_x\": %d, \"acc_y\": %d, \"acc_z\": %d,\n"
+	 "   \"gyr_x\": %.0f, \"gyr_y\": %.0f, \"gyr_z\": %.0f,\n"
+	 "   \"mag_x\": %d, \"mag_y\": %d, \"mag_z\": %d,\n"
+	 "   \"speedRMS_x\": %f, \"speedRMS_y\": %f, \"speedRMS_z\": %f,\n"
+
+
+	 "   \"motor_state\": \"%s\",\n"
+
+	 "   \"ts\": %lu, \"mac\": \"%s\"\n"
+	 "  }\n }",
+
+	 pub_data.temperature, pub_data.humidity, pub_data.pressure, pub_data.proximity,
+	 pub_data.ACC_Value[0], pub_data.ACC_Value[1], pub_data.ACC_Value[2],
+	 pub_data.GYR_Value[0], pub_data.GYR_Value[1], pub_data.GYR_Value[2],
+	 pub_data.MAG_Value[0], pub_data.MAG_Value[1], pub_data.MAG_Value[2],
+	 pub_data.speedRMS[0], pub_data.speedRMS[1], pub_data.speedRMS[2],
+
+	 pub_data.motor_state,
+
+	 pub_data.ts, pub_data.mac);
+
+	              if ( (ret < 0) || (ret >= MQTT_MSG_BUFFER_SIZE) )
+	                            {
+	                              msg_error("Telemetry message formatting error.\n");
+	                            }
+	                            else
+	                            {
+	                              ret = stiot_publish(&client, mqtt_pubtopic, mqtt_msg);  /* Wrapper for MQTTPublish() */
+	                              if (ret == MQSUCCESS)
+	                              {
+	                                /* Visual notification of the telemetry publication: LED blink. */
+	                                Led_Blink(80, 40, 5);
+	                                /* Restore the LED state */
+	                                Led_SetState(status_data.LedOn);
+	                                msg_info("#\n");
+	                                msg_info("publication topic: %s \tpayload: %s\n", mqtt_pubtopic, mqtt_msg);
+	                              }
+	                              else
+	                              {
+	                                msg_error("Telemetry publication failed.\n");
+	                                g_connection_needed_score++;
+	                              }
+
+	                              ret = MQTTYield(&client, 500);
+	                              if (ret != MQSUCCESS)
+	                              {
+	                                msg_error("Yield failed. Reconnection needed?.\n");
+	                                /* g_connection_needed_score++; */
+	                              }
+	                            }
+
+}
+
+void publ_payload3(MQTTClient client, device_config_t * device_config)
+{
+	uint32_t last_telemetry_time_ms;
+	int ret = 0;
+
+	last_telemetry_time_ms = HAL_GetTick();
+	snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/losant/%s/state", device_config->MQClientId);
+
+	ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n \"data\": {\n"
+	 "   \"LedOn\": %s,\n"
+	 "   \"TelemetryInterval\": %d,\n"
+	 "   \"ts\": %ld, \"mac\": \"%s\"\n"
+	 "  }\n}",
+	 (status_data.LedOn == true) ? "true" : "false",
+	 (int) status_data.TelemetryInterval,
+	 time(NULL), pub_data.mac);
+
+	if ( (ret < 0) || (ret >= MQTT_MSG_BUFFER_SIZE) )
+	{
+		msg_error("Telemetry message formatting error.\n");
+	}
+	else
+	{
+		ret = stiot_publish(&client, mqtt_pubtopic, mqtt_msg);  /* Wrapper for MQTTPublish() */
+		if (ret != MQSUCCESS)
+		{
+			msg_error("Status publication failed.\n");
+			g_connection_needed_score++;
+		}
+		else
+		{
+			msg_info("publication topic: %s \tpayload: %s\n",mqtt_pubtopic, mqtt_msg);
+			g_statusChanged = false;
+		}
+	}
+
+}
+
+void publ_payload2(MQTTClient client, device_config_t * device_config)
+{
+	uint32_t last_telemetry_time_ms;
+	int ret = 0;
+
+
+	last_telemetry_time_ms = HAL_GetTick();
+	snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/losant/%s/state", device_config->MQClientId);
+
+	ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n \"data\": {\n"
+	 "   \"ampl_peak_x_1\": %f,\n"
+	 "   \"ampl_peak_x_2\": %f,\n"
+	 "   \"ampl_peak_x_3\": %f,\n"
+	 "   \"ampl_peak_x_4\": %f,\n"
+	 "   \"ampl_peak_x_5\": %f,\n"
+
+
+
+	 "   \"freq_peak_x_1\": %f,\n"
+	 "   \"freq_peak_x_2\": %f,\n"
+	 "   \"freq_peak_x_3\": %f,\n"
+	 "   \"freq_peak_x_4\": %f,\n"
+	 "   \"freq_peak_x_5\": %f\n"
+
+
+
+	 "  }\n }",
+
+	 pub_data.ampl_peak_x[0],
+	 pub_data.ampl_peak_x[1],
+	 pub_data.ampl_peak_x[2],
+	 pub_data.ampl_peak_x[3],
+	 pub_data.ampl_peak_x[4],
+
+
+	 pub_data.freq_peak_x[0],
+	 pub_data.freq_peak_x[1],
+	 pub_data.freq_peak_x[2],
+	 pub_data.freq_peak_x[3],
+	 pub_data.freq_peak_x[4]
+
+
+
+	 );
+
+	              if ( (ret < 0) || (ret >= MQTT_MSG_BUFFER_SIZE) )
+	                            {
+	                              msg_error("Telemetry message formatting error.\n");
+	                            }
+	                            else
+	                            {
+	                              ret = stiot_publish(&client, mqtt_pubtopic, mqtt_msg);  /* Wrapper for MQTTPublish() */
+	                              if (ret == MQSUCCESS)
+	                              {
+	                                /* Visual notification of the telemetry publication: LED blink. */
+	                                Led_Blink(80, 40, 5);
+	                                /* Restore the LED state */
+	                                Led_SetState(status_data.LedOn);
+	                                msg_info("#\n");
+	                                msg_info("publication topic: %s \tpayload: %s\n", mqtt_pubtopic, mqtt_msg);
+	                              }
+	                              else
+	                              {
+	                                msg_error("Telemetry publication failed.\n");
+	                                g_connection_needed_score++;
+	                              }
+
+	                              ret = MQTTYield(&client, 500);
+	                              if (ret != MQSUCCESS)
+	                              {
+	                                msg_error("Yield failed. Reconnection needed?.\n");
+	                                /* g_connection_needed_score++; */
+	                              }
+	                            }
+
+}
+
+void publ_payload4(MQTTClient client, device_config_t * device_config)
+{
+	uint32_t last_telemetry_time_ms;
+	int ret = 0;
+
+	last_telemetry_time_ms = HAL_GetTick();
+	snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/losant/%s/state", device_config->MQClientId);
+
+	ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n \"data\": {\n"
+	 "   \"ampl_peak_y_1\": %f,\n"
+	 "   \"ampl_peak_y_2\": %f,\n"
+	 "   \"ampl_peak_y_3\": %f,\n"
+	 "   \"ampl_peak_y_4\": %f,\n"
+	 "   \"ampl_peak_y_5\": %f,\n"
+
+
+
+	 "   \"freq_peak_y_1\": %f,\n"
+	 "   \"freq_peak_y_2\": %f,\n"
+	 "   \"freq_peak_y_3\": %f,\n"
+	 "   \"freq_peak_y_4\": %f,\n"
+	 "   \"freq_peak_y_5\": %f\n"
+
+
+
+	 "  }\n }",
+
+	 pub_data.ampl_peak_y[0],
+	 pub_data.ampl_peak_y[1],
+	 pub_data.ampl_peak_y[2],
+	 pub_data.ampl_peak_y[3],
+	 pub_data.ampl_peak_y[4],
+
+
+	 pub_data.freq_peak_y[0],
+	 pub_data.freq_peak_y[1],
+	 pub_data.freq_peak_y[2],
+	 pub_data.freq_peak_y[3],
+	 pub_data.freq_peak_y[4]
+
+
+
+	 );
+
+	              if ( (ret < 0) || (ret >= MQTT_MSG_BUFFER_SIZE) )
+	                            {
+	                              msg_error("Telemetry message formatting error.\n");
+	                            }
+	                            else
+	                            {
+	                              ret = stiot_publish(&client, mqtt_pubtopic, mqtt_msg);  /* Wrapper for MQTTPublish() */
+	                              if (ret == MQSUCCESS)
+	                              {
+	                                /* Visual notification of the telemetry publication: LED blink. */
+	                                Led_Blink(80, 40, 5);
+	                                /* Restore the LED state */
+	                                Led_SetState(status_data.LedOn);
+	                                msg_info("#\n");
+	                                msg_info("publication topic: %s \tpayload: %s\n", mqtt_pubtopic, mqtt_msg);
+	                              }
+	                              else
+	                              {
+	                                msg_error("Telemetry publication failed.\n");
+	                                g_connection_needed_score++;
+	                              }
+
+	                              ret = MQTTYield(&client, 500);
+	                              if (ret != MQSUCCESS)
+	                              {
+	                                msg_error("Yield failed. Reconnection needed?.\n");
+	                                /* g_connection_needed_score++; */
+	                              }
+	                            }
+
+}
+
+void publ_payload5(MQTTClient client, device_config_t * device_config)
+{
+	uint32_t last_telemetry_time_ms;
+	int ret = 0;
+
+	last_telemetry_time_ms = HAL_GetTick();
+	snprintf(mqtt_pubtopic, MQTT_TOPIC_BUFFER_SIZE, "/losant/%s/state", device_config->MQClientId);
+
+	ret = snprintf( mqtt_msg, MQTT_MSG_BUFFER_SIZE, "{\n \"data\": {\n"
+	 "   \"ampl_peak_z_1\": %f,\n"
+	 "   \"ampl_peak_z_2\": %f,\n"
+	 "   \"ampl_peak_z_3\": %f,\n"
+	 "   \"ampl_peak_z_4\": %f,\n"
+	 "   \"ampl_peak_z_5\": %f,\n"
+
+
+
+	 "   \"freq_peak_z_1\": %f,\n"
+	 "   \"freq_peak_z_2\": %f,\n"
+	 "   \"freq_peak_z_3\": %f,\n"
+	 "   \"freq_peak_z_4\": %f,\n"
+	 "   \"freq_peak_z_5\": %f\n"
+
+
+
+	 "  }\n }",
+
+	 pub_data.ampl_peak_z[0],
+	 pub_data.ampl_peak_z[1],
+	 pub_data.ampl_peak_z[2],
+	 pub_data.ampl_peak_z[3],
+	 pub_data.ampl_peak_z[4],
+
+
+	 pub_data.freq_peak_z[0],
+	 pub_data.freq_peak_z[1],
+	 pub_data.freq_peak_z[2],
+	 pub_data.freq_peak_z[3],
+	 pub_data.freq_peak_z[4]
+
+
+
+	 );
+
+	              if ( (ret < 0) || (ret >= MQTT_MSG_BUFFER_SIZE) )
+	                            {
+	                              msg_error("Telemetry message formatting error.\n");
+	                            }
+	                            else
+	                            {
+	                              ret = stiot_publish(&client, mqtt_pubtopic, mqtt_msg);  /* Wrapper for MQTTPublish() */
+	                              if (ret == MQSUCCESS)
+	                              {
+	                                /* Visual notification of the telemetry publication: LED blink. */
+	                                Led_Blink(80, 40, 5);
+	                                /* Restore the LED state */
+	                                Led_SetState(status_data.LedOn);
+	                                msg_info("#\n");
+	                                msg_info("publication topic: %s \tpayload: %s\n", mqtt_pubtopic, mqtt_msg);
+	                              }
+	                              else
+	                              {
+	                                msg_error("Telemetry publication failed.\n");
+	                                g_connection_needed_score++;
+	                              }
+
+	                              ret = MQTTYield(&client, 500);
+	                              if (ret != MQSUCCESS)
+	                              {
+	                                msg_error("Yield failed. Reconnection needed?.\n");
+	                                /* g_connection_needed_score++; */
+	                              }
+	                            }
+
+}
 /**
  * MQTT publish API abstraction called by the metering loop.
  */

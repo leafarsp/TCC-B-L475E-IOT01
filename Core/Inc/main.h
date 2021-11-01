@@ -359,7 +359,17 @@ extern  SPI_HandleTypeDef hspi;
 extern net_hnd_t         hnet;
 
 extern const user_config_t *lUserConfigPtr;
+#define NUM_MAX_FREQS	5
+#define FREQ_HIGH_PASS  10.
 
+float high_freqsX[NUM_MAX_FREQS];
+float high_freqsY[NUM_MAX_FREQS];
+float high_freqsZ[NUM_MAX_FREQS];
+
+float high_AmplX[NUM_MAX_FREQS];
+float high_AmplY[NUM_MAX_FREQS];
+float high_AmplZ[NUM_MAX_FREQS];
+#define FFT_threshold	.25
 #ifdef __cplusplus
 }
 #endif
@@ -381,6 +391,14 @@ extern const user_config_t *lUserConfigPtr;
    float     humidity;
    float     pressure;
    int32_t   proximity;
+   float	 speedRMS[3];
+   char		 motor_state[30];
+   float	 ampl_peak_x[NUM_MAX_FREQS];
+   float	 ampl_peak_y[NUM_MAX_FREQS];
+   float	 ampl_peak_z[NUM_MAX_FREQS];
+   float	 freq_peak_x[NUM_MAX_FREQS];
+   float	 freq_peak_y[NUM_MAX_FREQS];
+   float	 freq_peak_z[NUM_MAX_FREQS];
  //#endif /* SENSOR */
  } pub_data_t;
 

@@ -70,6 +70,7 @@ extern "C" {
 #define CIRC_BUFFER_SIZE_MAX  (uint16_t)(FFT_SIZE_MAX)   //!< Max circular buffer for storing input values for FFT
 
 #define DC_SMOOTH             0.975f        //!< Smooth parameter used for DC filtering
+
 #define GAMMA                 0.5f          //!< GAMMA parameter used for Integration Algorithm
 
 #define G_CONST               9.80665f                 //!< in m/s^2
