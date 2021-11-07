@@ -1022,7 +1022,7 @@ void MotionSP_FrequencyDomainProcess(void)
 
 //  printf("\n\nFFT:\n");
   fr_resolution = AcceleroODR.Frequency / ((float)(MotionSP_Parameters.FftSize));
-  amplitude_factor = (float) (MotionSP_Parameters.FftSize)/4;
+  amplitude_factor = (float) (MotionSP_Parameters.FftSize)/2;
 //    for(int i=0;i<MotionSP_Parameters.FftSize/2;i++)
 //    {
 //  	  printf("Fr,%f,x,%f,y,%f,z,%f\n",((float) i) * fr_resolution,

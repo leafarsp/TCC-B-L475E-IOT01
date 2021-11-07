@@ -576,7 +576,7 @@ void genericmqtt_client_XCube_sample_run(void)
 
 
         	colect_acc_data();
-        	HAL_Delay(5000);
+        	//HAL_Delay(5000);
             //uint8_t command = Button_WaitForMultiPush(500);
             bool b_sample_data = 1;//(command == BP_SINGLE_PUSH); /* If short button push, publish once. */
 //            if (command == BP_MULTIPLE_PUSH)                  /* If long button push, toggle the telemetry publication. */
@@ -686,24 +686,25 @@ void publ_payload1(MQTTClient client, device_config_t * device_config)
 	pub_data.speedRMS[1] = speedRMSy;//sTimeDomain.SpeedRms.AXIS_Y/100;
 	pub_data.speedRMS[2] = speedRMSz;//sTimeDomain.SpeedRms.AXIS_Z/100;
 
-	if ((speedRMSx <= 2.) ||
-	  (speedRMSy <= 2.) ||
-	  (speedRMSz <= 2.)
-	  )
-	{
-	  strcpy(pub_data.motor_state, "Vibracao normal");
-	} else if (((speedRMSx > 2.) && (speedRMSx <= 5.))||
-			 ((speedRMSy > 2.) && (speedRMSy <= 5.))||
-			 ((speedRMSz > 2.) && (speedRMSz <= 5.))
-		  )
-	{
-	  strcpy(pub_data.motor_state, "Vibracao moderada");
-	} else if (((speedRMSx > 5.) )||
-		 ((speedRMSy > 5.) )||
-		 ((speedRMSz > 5.) )
+
+	if (((speedRMSx > 8.9) )||
+		 ((speedRMSy > 8.9) )||
+		 ((speedRMSz > 8.9) )
 	  )
 	{
 	  strcpy(pub_data.motor_state, "Vibracao critica");
+	}  else if (((speedRMSx > 2.8) && (speedRMSx <= 8.9))||
+			 ((speedRMSy > 2.8) && (speedRMSy <= 8.9))||
+			 ((speedRMSz > 2.8) && (speedRMSz <= 8.9))
+		  )
+	{
+	  strcpy(pub_data.motor_state, "Vibracao moderada");
+	} else if ((speedRMSx <= 2.8) ||
+			  (speedRMSy <= 2.8) ||
+			  (speedRMSz <= 2.8)
+			  )
+	{
+	  strcpy(pub_data.motor_state, "Vibracao normal");
 	}
 
 	last_telemetry_time_ms = HAL_GetTick();

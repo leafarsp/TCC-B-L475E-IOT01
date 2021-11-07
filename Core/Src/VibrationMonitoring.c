@@ -94,9 +94,9 @@ void colect_acc_data(void){
 		  //Init_Demo();
 	     if (Collect_Data())
 	     {
-	    	 speedRMSx = sTimeDomain.SpeedRms.AXIS_X/100.;
-	    	 speedRMSy = sTimeDomain.SpeedRms.AXIS_Y/100.;
-	    	 speedRMSz = sTimeDomain.SpeedRms.AXIS_Z/100.;
+	    	 speedRMSx = sTimeDomain.SpeedRms.AXIS_X/200.;
+	    	 speedRMSy = sTimeDomain.SpeedRms.AXIS_Y/200.;
+	    	 speedRMSz = sTimeDomain.SpeedRms.AXIS_Z/200.;
 	    	 sampling_frequency = AcceleroODR.Frequency / ((float)(MotionSP_Parameters.FftSize));
 
 	    	 store_highFreq();
@@ -130,7 +130,7 @@ void colect_acc_data(void){
 			 printf("RMS-ACC,ACC_rms_x,%f,ACC_rms_y,%f,ACC_rms_z,%f\n",sTimeDomain.AccRms.AXIS_X,
 																	 sTimeDomain.AccRms.AXIS_Y,
 																	 sTimeDomain.AccRms.AXIS_Z);
-			 printf("RMS-Speed,Speed_rms_x,%f,Speed_rms_y,%f,Speed_rms_z,%f\n",speedRMSx,
+			 printf("RMS-Speed,Speed_rms_x,%.2f,Speed_rms_y,%.2f,Speed_rms_z,%.2f\n",speedRMSx,
 																			   speedRMSy,
 																			   speedRMSz);
 			 printf("Pico-ACC,Pico_acc_x,%f,Pico_acc_y,%f,Pico_acc_z,%f\n",sTimeDomain.AccPeak.AXIS_X,
