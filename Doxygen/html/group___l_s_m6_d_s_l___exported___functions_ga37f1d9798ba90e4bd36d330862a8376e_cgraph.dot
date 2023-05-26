@@ -1,0 +1,12 @@
+digraph "LSM6DSL_ACC_SetOutputDataRate"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="LSM6DSL_ACC_SetOutputDataRate",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Set the LSM6DSL accelerometer sensor output data rate."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="LSM6DSL_ACC_SetOutputData\lRate_When_Disabled",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___l_s_m6_d_s_l___private___functions.html#ga077cf6daee4a7c67ab98ba8fc989d934",tooltip="Set the LSM6DSL accelerometer sensor output data rate when disabled."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="LSM6DSL_ACC_SetOutputData\lRate_When_Enabled",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___l_s_m6_d_s_l___private___functions.html#gad3ee6cd8fae2372a739e7ec0d7ae0874",tooltip="Set the LSM6DSL accelerometer sensor output data rate when enabled."];
+}

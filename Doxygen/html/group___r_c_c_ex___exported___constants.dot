@@ -1,0 +1,33 @@
+digraph "RCCEx Exported Constants"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node2 [label="RCCEx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex.html",tooltip="RCC Extended HAL module driver."];
+  Node13 [label="ADC Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___a_d_c___clock___source.html",tooltip=" "];
+  Node14 [label="RCC LSE CSS external\l interrupt line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___e_x_t_i___l_i_n_e___l_s_e_c_s_s.html",tooltip=" "];
+  Node1 [label="RCCEx Exported Constants",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node8 [label="I2C1 Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___i2_c1___clock___source.html",tooltip=" "];
+  Node9 [label="I2C3 Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___i2_c3___clock___source.html",tooltip=" "];
+  Node10 [label="LPTIM1 Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___l_p_t_i_m1___clock___source.html",tooltip=" "];
+  Node11 [label="LPTIM2 Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___l_p_t_i_m2___clock___source.html",tooltip=" "];
+  Node7 [label="LPUART1 Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___l_p_u_a_r_t1___clock___source.html",tooltip=" "];
+  Node3 [label="Low Speed Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___l_s_c_o___clock___source.html",tooltip=" "];
+  Node4 [label="Periph Clock Selection",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___periph___clock___selection.html",tooltip=" "];
+  Node12 [label="RNG Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___r_n_g___clock___source.html",tooltip=" "];
+  Node5 [label="USART1 Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___u_s_a_r_t1___clock___source.html",tooltip=" "];
+  Node6 [label="USART2 Clock Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_c_c_ex___u_s_a_r_t2___clock___source.html",tooltip=" "];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node4 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node5 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node6 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node7 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node8 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node9 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node10 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node11 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node12 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node13 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node14 [shape=plaintext, dir="back", style="solid"];
+}

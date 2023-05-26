@@ -1,0 +1,27 @@
+digraph "net.h"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="net.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Network API."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="cloud.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cloud_8c.html",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="http_lib.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$http__lib_8c.html",tooltip="HTTP Client library."];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="http_util.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$http__util_8c.html",tooltip="Helper functions for building HTTP GET and POST requests, and stream reading."];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="mbedtls_net.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mbedtls__net_8c.html",tooltip="Mbedtls network porting layer. Callbacks implementation."];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="net_internal.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$net__internal_8h.html",tooltip="Network abstraction at transport layer level. Internal definitions."];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="net.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$net_8c.html",tooltip="Network abstraction at transport layer level."];
+  Node6 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="net_tcp_c2c.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$net__tcp__c2c_8c.html",tooltip="Network abstraction at transport layer level. TCP implementation on ST C2C connectivity API."];
+  Node6 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="net_tcp_lwip.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$net__tcp__lwip_8c.html",tooltip="Network abstraction at transport layer level. TCP implementation on LwIP."];
+  Node6 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="net_tcp_wifi.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$net__tcp__wifi_8c.html",tooltip="Network abstraction at transport layer level. TCP implementation on ST WiFi connectivity API."];
+  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="timedate.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$timedate_8c.html",tooltip="Configuration of the RTC value."];
+}

@@ -1,0 +1,17 @@
+digraph "BSP" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_60925fc218da8ca7908795bf5f624060 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="Drivers" fontname="Helvetica", fontsize="10", URL="dir_60925fc218da8ca7908795bf5f624060.html"]
+  dir_8a47de0d9a7b537f24e8ff521c06cbd3 [shape=box label="STM32L4xx_HAL_Driver" fillcolor="white" style="filled" color="red" URL="dir_8a47de0d9a7b537f24e8ff521c06cbd3.html"];
+  subgraph clusterdir_0d65e5fa077ec095e65d7480f3bb9880 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_0d65e5fa077ec095e65d7480f3bb9880.html"];
+    dir_0d65e5fa077ec095e65d7480f3bb9880 [shape=plaintext label="BSP"];
+  dir_cb324d6642d6a17c27256f8131a02eb8 [shape=box label="B-L475E-IOT01A1" fillcolor="white" style="filled" URL="dir_cb324d6642d6a17c27256f8131a02eb8.html"];
+  dir_bf91a480035a6a616cbd98d672525553 [shape=box label="Components" fillcolor="white" style="filled" color="red" URL="dir_bf91a480035a6a616cbd98d672525553.html"];
+  dir_48427879b37df71262d16707b2c18c6e [shape=box label="es_wifi" fillcolor="white" style="filled" URL="dir_48427879b37df71262d16707b2c18c6e.html"];
+  }
+  }
+  dir_cb324d6642d6a17c27256f8131a02eb8->dir_8a47de0d9a7b537f24e8ff521c06cbd3 [headlabel="1", labeldistance=1.5 headhref="dir_000005_000027.html"];
+}

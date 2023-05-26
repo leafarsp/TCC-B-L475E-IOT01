@@ -1,0 +1,9 @@
+digraph "B_L475E_IOT01A1 BUS Private types"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node2 [label="B_L475E_IOT01A1 BUS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___b___l475_e___i_o_t01_a1___b_u_s.html",tooltip=" "];
+  Node1 [label="B_L475E_IOT01A1 BUS\l Private types",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+}

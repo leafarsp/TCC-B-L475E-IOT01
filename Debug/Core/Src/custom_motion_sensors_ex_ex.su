@@ -1,0 +1,2 @@
+custom_motion_sensors_ex_ex.c:16:9:CUSTOM_MOTION_SENSOR_DRDY_Set_Mode	24	static
+custom_motion_sensors_ex_ex.c:49:9:CUSTOM_MOTION_SENSOR_Set_INT1_DRDY	24	static

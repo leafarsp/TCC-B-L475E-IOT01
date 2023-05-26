@@ -1,0 +1,9 @@
+digraph "address-data structure definition"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node1 [label="address-data structure\l definition",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="This structure is useful to load a predefined configuration of a sensor. You can create a sensor conf..."];
+  Node2 [label="sensors common types",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___s_t_microelectronics.html",tooltip=" "];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+}

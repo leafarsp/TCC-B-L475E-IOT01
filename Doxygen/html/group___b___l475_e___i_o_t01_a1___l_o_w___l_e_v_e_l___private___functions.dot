@@ -1,0 +1,13 @@
+digraph "B_L475E_IOT01A1 LOW LEVEL Private Functions"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node3 [label="B_L475E_IOT01A1 BUS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___b___l475_e___i_o_t01_a1___b_u_s.html",tooltip=" "];
+  Node4 [label="B_L475E_IOT01A1_BUS\l Exported Functions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___b___l475_e___i_o_t01_a1___b_u_s___exported___functions.html",tooltip=" "];
+  Node2 [label="B_L475E_IOT01A1 LOW\l LEVEL Private Defines",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___b___l475_e___i_o_t01_a1___l_o_w___l_e_v_e_l___private___defines.html",tooltip=" "];
+  Node1 [label="B_L475E_IOT01A1 LOW\l LEVEL Private Functions",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node3->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node4 [shape=plaintext, dir="back", style="solid"];
+}

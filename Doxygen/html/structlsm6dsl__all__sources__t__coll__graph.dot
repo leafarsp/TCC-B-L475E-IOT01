@@ -1,0 +1,24 @@
+digraph "lsm6dsl_all_sources_t"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lsm6dsl_all_sources_t",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" wake_up_src" ,fontname="Helvetica"];
+  Node2 [label="lsm6dsl_wake_up_src_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structlsm6dsl__wake__up__src__t.html",tooltip=" "];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" tap_src" ,fontname="Helvetica"];
+  Node3 [label="lsm6dsl_tap_src_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structlsm6dsl__tap__src__t.html",tooltip=" "];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" d6d_src" ,fontname="Helvetica"];
+  Node4 [label="lsm6dsl_d6d_src_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structlsm6dsl__d6d__src__t.html",tooltip=" "];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" status_reg" ,fontname="Helvetica"];
+  Node5 [label="lsm6dsl_status_reg_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structlsm6dsl__status__reg__t.html",tooltip=" "];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" func_src1" ,fontname="Helvetica"];
+  Node6 [label="lsm6dsl_func_src1_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structlsm6dsl__func__src1__t.html",tooltip=" "];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" func_src2" ,fontname="Helvetica"];
+  Node7 [label="lsm6dsl_func_src2_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structlsm6dsl__func__src2__t.html",tooltip=" "];
+  Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" wrist_tilt_ia" ,fontname="Helvetica"];
+  Node8 [label="lsm6dsl_wrist_tilt_ia_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structlsm6dsl__wrist__tilt__ia__t.html",tooltip=" "];
+  Node9 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" a_wrist_tilt_mask" ,fontname="Helvetica"];
+  Node9 [label="lsm6dsl_a_wrist_tilt\l_mask_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structlsm6dsl__a__wrist__tilt__mask__t.html",tooltip=" "];
+}

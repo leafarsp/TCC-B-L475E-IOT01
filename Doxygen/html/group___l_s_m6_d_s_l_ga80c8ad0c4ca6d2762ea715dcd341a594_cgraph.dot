@@ -1,0 +1,10 @@
+digraph "lsm6dsl_xl_usr_offset_set"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lsm6dsl_xl_usr_offset_set",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Accelerometer axis user offset correction expressed in two’s complement, weight depends on USR_OFF_W ..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="lsm6dsl_write_reg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___l_s_m6_d_s_l__interfaces__functions.html#gacbf451bb4fac251559c911d462ca5e50",tooltip="Write generic device register."];
+}

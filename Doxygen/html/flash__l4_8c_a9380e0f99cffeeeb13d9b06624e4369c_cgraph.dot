@@ -1,0 +1,12 @@
+digraph "FLASH_unlock_erase"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="FLASH_unlock_erase",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Erase FLASH memory page(s) at address."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="FLASH_get_bank",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$flash__l4_8c.html#aa8fda3898ab3b75a5c3f4bf79a770bc1",tooltip="Get the bank of a given address."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="FLASH_get_pageInBank",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$flash__l4_8c.html#a70b835f86aec7fa69b9c98f1e5bfa8fd",tooltip="Get the page of a given address within its FLASH bank."];
+}

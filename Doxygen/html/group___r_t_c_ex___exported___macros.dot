@@ -1,0 +1,19 @@
+digraph "RTCEx Exported Macros"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node2 [label="RTCEx Exported Constants",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_t_c_ex___exported___constants.html",tooltip=" "];
+  Node5 [label="RTCEx Exported Functions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_t_c_ex___exported___functions.html",tooltip=" "];
+  Node1 [label="RTCEx Exported Macros",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node6 [label="RTCEx Private Constants",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_t_c_ex___private___constants.html",tooltip=" "];
+  Node7 [label="RTCEx Private Macros",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_t_c_ex___private___macros.html",tooltip=" "];
+  Node4 [label="RTC Timestamp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_t_c_ex___timestamp.html",tooltip=" "];
+  Node3 [label="RTC WakeUp Timer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___r_t_c_ex___wake_up___timer.html",tooltip=" "];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node4 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node5 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node6 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node7 [shape=plaintext, dir="back", style="solid"];
+}

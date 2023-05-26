@@ -1,0 +1,12 @@
+timer.c:60:6:sleep	16	static
+timer.c:65:6:has_timer_expired	24	static,ignoring_inline_asm
+timer.c:78:6:countdown_ms	24	static,ignoring_inline_asm
+timer.c:89:10:left_ms	24	static,ignoring_inline_asm
+timer.c:102:6:countdown_sec	24	static,ignoring_inline_asm
+timer.c:113:6:init_timer	16	static
+timer.c:116:6:TimerCountdownMS	16	static
+timer.c:123:6:TimerCountdown	16	static
+timer.c:129:5:TimerLeftMS	24	static
+timer.c:145:6:TimerIsExpired	16	static
+timer.c:151:6:TimerInit	16	static
+timer.c:164:5:getTimestamp	88	static

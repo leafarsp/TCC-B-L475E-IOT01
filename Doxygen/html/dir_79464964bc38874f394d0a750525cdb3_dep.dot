@@ -1,0 +1,11 @@
+digraph "Inc" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_8a47de0d9a7b537f24e8ff521c06cbd3 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="STM32L4xx_HAL_Driver" fontname="Helvetica", fontsize="10", URL="dir_8a47de0d9a7b537f24e8ff521c06cbd3.html"]
+  dir_79464964bc38874f394d0a750525cdb3 [shape=box, label="Inc", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_79464964bc38874f394d0a750525cdb3.html"];
+  }
+  dir_bd09ff09a9c7d83a4c030dbdaee94d76 [shape=box label="CMSIS" fillcolor="white" style="filled" color="red" URL="dir_bd09ff09a9c7d83a4c030dbdaee94d76.html"];
+  dir_79464964bc38874f394d0a750525cdb3->dir_bd09ff09a9c7d83a4c030dbdaee94d76 [headlabel="1", labeldistance=1.5 headhref="dir_000028_000009.html"];
+}

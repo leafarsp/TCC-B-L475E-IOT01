@@ -1,0 +1,9 @@
+digraph "LSM6DSL Exported Types"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node2 [label="LSM6DSL",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___l_s_m6_d_s_l.html",tooltip="This file provides a set of functions needed to drive the lsm6dsl enanced inertial module."];
+  Node1 [label="LSM6DSL Exported Types",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+}

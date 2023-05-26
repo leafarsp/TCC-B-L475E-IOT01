@@ -1,0 +1,20 @@
+digraph "http_sock_rcv"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="http_sock_rcv",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Receive data from an socket-like connection."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="http_close",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$http__util_8c.html#ae4e1552638f3aa9fe0ef1a73a5498260",tooltip="Close an HTTP progressive download session."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="http_is_open",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$http__util_8c.html#a905bfd171c3184db6dee1d1c89a56ba9",tooltip="Tells whether an HTTP progressive download session is still open, or has been closed by the server."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="http_open",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$http__util_8c.html#a8e0f53c5f151d4e84cb489160d28674d",tooltip="Open an HTTP progressive download session."];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="http_url_parse",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$http__util_8c.html#a9040402e65299b812376070911bcbf0c",tooltip="Parse and split an http url into hostname/port number/query string."];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="http_read",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$http__util_8c.html#a04077d2300baad97942ac64c6e70d8ca",tooltip="Read from an HTTP progressive download session."];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="http_req_create",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$http__util_8c.html#abd2a766019f89e0d4cb0db4095eb49c6",tooltip="Create an HTTP request string from the parameter list."];
+}

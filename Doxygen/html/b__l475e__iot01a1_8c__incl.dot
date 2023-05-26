@@ -1,0 +1,25 @@
+digraph "b_l475e_iot01a1.c"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="b_l475e_iot01a1.c",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=": Source file for the BSP Common driver"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="b_l475e_iot01a1.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$b__l475e__iot01a1_8h.html",tooltip=": header file for the BSP Common driver"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="b_l475e_iot01a1_conf.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="b_l475e_iot01a1_errno.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$b__l475e__iot01a1__errno_8h.html",tooltip=": Error Code"];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="main.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="stm32l4xx_hal_exti.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$stm32l4xx__hal__exti_8h.html",tooltip="Header file of EXTI HAL module."];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="stm32l4xx_hal_def.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$stm32l4xx__hal__def_8h.html",tooltip="This file contains HAL common defines, enumeration, macros and structures definitions."];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="stm32l4xx.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$stm32l4xx_8h.html",tooltip="CMSIS STM32L4xx Device Peripheral Access Layer Header File."];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Legacy/stm32_hal_legacy.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node7 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="stddef.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

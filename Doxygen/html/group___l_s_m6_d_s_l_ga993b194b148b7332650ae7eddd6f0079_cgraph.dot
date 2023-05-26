@@ -1,0 +1,10 @@
+digraph "lsm6dsl_fifo_write_trigger_get"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lsm6dsl_fifo_write\l_trigger_get",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Trigger signal for FIFO write operation.[get]."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="lsm6dsl_read_reg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___l_s_m6_d_s_l__interfaces__functions.html#ga7ad5e0d379d6cc9a6a2dff69c6df5a50",tooltip="Read generic device register."];
+}

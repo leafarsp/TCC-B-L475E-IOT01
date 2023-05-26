@@ -1,0 +1,12 @@
+digraph "LSM6DSL_GYRO_GetAxes"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="LSM6DSL_GYRO_GetAxes",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Get the LSM6DSL gyroscope sensor axes."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="lsm6dsl_angular_rate\l_raw_get",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___l_s_m6_d_s_l___dataoutput.html#ga05a2d109adc65390dd5f6f487aae5db3",tooltip="Angular rate sensor. The value is expressed as a 16-bit word in two’s complement.[get]."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="lsm6dsl_read_reg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___l_s_m6_d_s_l__interfaces__functions.html#ga7ad5e0d379d6cc9a6a2dff69c6df5a50",tooltip="Read generic device register."];
+}

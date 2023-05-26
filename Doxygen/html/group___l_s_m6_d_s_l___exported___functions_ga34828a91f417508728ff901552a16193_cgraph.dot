@@ -1,0 +1,10 @@
+digraph "LSM6DSL_DeInit"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="LSM6DSL_DeInit",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Deinitialize the LSM6DSL sensor."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="LSM6DSL_ACC_Disable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group___l_s_m6_d_s_l___exported___functions.html#ga21ee2f9c3489d4279903a4b10145c408",tooltip="Disable the LSM6DSL accelerometer sensor."];
+}

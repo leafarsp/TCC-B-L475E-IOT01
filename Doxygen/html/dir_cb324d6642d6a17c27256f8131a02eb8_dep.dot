@@ -1,0 +1,11 @@
+digraph "B-L475E-IOT01A1" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_0d65e5fa077ec095e65d7480f3bb9880 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="BSP" fontname="Helvetica", fontsize="10", URL="dir_0d65e5fa077ec095e65d7480f3bb9880.html"]
+  dir_cb324d6642d6a17c27256f8131a02eb8 [shape=box, label="B-L475E-IOT01A1", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_cb324d6642d6a17c27256f8131a02eb8.html"];
+  }
+  dir_8a47de0d9a7b537f24e8ff521c06cbd3 [shape=box label="STM32L4xx_HAL_Driver" fillcolor="white" style="filled" color="red" URL="dir_8a47de0d9a7b537f24e8ff521c06cbd3.html"];
+  dir_cb324d6642d6a17c27256f8131a02eb8->dir_8a47de0d9a7b537f24e8ff521c06cbd3 [headlabel="1", labeldistance=1.5 headhref="dir_000005_000027.html"];
+}
